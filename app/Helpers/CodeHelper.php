@@ -25,10 +25,47 @@ if (!function_exists('timeAgo')) {
         }
 
         return implode(', ', $result);
-
         // return implode(', ', array_slice($result, 0, 2));
     }
 }
+
+if (!function_exists('convertMesure')) {
+    function convertMesure($value, $unit) {
+        if (strtolower($unit) === 'feet') {
+            return $value * 12; // Convert feet to inches
+        } elseif (strtolower($unit) === 'inches') {
+            return $value / 12; // Convert inches to feet
+        }
+        return null; // Return null if the unit is not recognized
+    }
+}
+
+
+use Illuminate\Support\Facades\Storage;
+if (!function_exists('downloadFile')) {
+    function downloadFile($filePath, $fileName = null) {
+        if (Storage::disk('public')->exists($filePath)) {
+            return response()->download(Storage::disk('public')->path($filePath), $fileName);
+        }
+        return null;
+    }
+}
+
+
+
+if (!function_exists('calculateAge')) {
+    function calculateAge($dob) {
+        return \Carbon\Carbon::parse($dob)->age;
+    }
+}
+
+
+if (!function_exists('formatPhoneNumber')) {
+    function formatPhoneNumber($phone, $countryCode = '+91') {
+        return $countryCode . preg_replace('/[^0-9]/', '', $phone);
+    }
+}
+
 
 
 use Illuminate\Support\Str;
