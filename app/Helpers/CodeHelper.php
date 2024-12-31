@@ -1,8 +1,107 @@
 <?php
 
+if (!function_exists('timeAgo')) {
+    function timeAgo($timestamp) {
+        $diff = \Carbon\Carbon::parse($timestamp)->diff(\Carbon\Carbon::now());
+        
+        $months = $diff->m;
+        $days = $diff->d;
+        $hours = $diff->h;
+        $minutes = $diff->i;
+
+        $result = [];
+
+        if ($months > 0) {
+            $result[] = "{$months} month" . ($months > 1 ? 's' : '');
+        }
+        if ($days > 0) {
+            $result[] = "{$days} day" . ($days > 1 ? 's' : '');
+        }
+        if ($hours > 0) {
+            $result[] = "{$hours} hour" . ($hours > 1 ? 's' : '');
+        }
+        if ($minutes > 0) {
+            $result[] = "{$minutes} minute" . ($minutes > 1 ? 's' : '');
+        }
+
+        return implode(', ', $result);
+
+        // return implode(', ', array_slice($result, 0, 2));
+    }
+}
+
+
+use Illuminate\Support\Str;
+if (!function_exists('generatePassword')) {
+    function generatePassword($length = 8) {
+        return Str::random($length);
+    }
+}
+
+
+if (!function_exists('formatDate')) {
+    function formatDate($date, $format = 'Y-m-d H:i:s') {
+        return \Carbon\Carbon::parse($date)->format($format);
+    }
+}
+
+if (!function_exists('getClientIp')) {
+    function getClientIp() {
+        return request()->ip();
+    }
+}
+
+if (!function_exists('calculatePercentage')) {
+    function calculatePercentage($total, $value) {
+        return $total > 0 ? round(($value / $total) * 100, 2) : 0;
+    }
+}
+
 
 if (!function_exists('formatCurrency')) {
     function formatCurrency($amount) {
         return '$' . number_format($amount, 2);
     }
 }
+
+if (!function_exists('uploadFile')) {
+    function uploadFile($files) {
+
+        $storedFiles = [];
+        $files = is_array($files) ? $files : [$files];
+
+        foreach ($files as $file) {
+            $extension = $file->getClientOriginalExtension();
+            $randomName = uniqid() . '_' . date('YmdHis') . '.' . $extension;
+
+            $isAdmin = true;
+            $folder = ($isAdmin) ? 'admin': 'user'; // set here folder location 
+
+            $path = $file->storeAs($folder.'/uploads', $randomName); 
+            $storedFiles[] = $path;
+        }
+        
+        return $storedFiles;
+    }
+}
+
+if (!function_exists('createSlug')) {
+    function createSlug($string) {
+        
+        $slug = strtolower($string);
+        $slug = str_replace(' ', '-', $slug);
+        $slug = preg_replace('/[^a-z0-9-]/', '', $slug);
+        $slug = trim($slug, '-');
+
+        return $slug;
+    }
+}
+
+if (!function_exists('p')) {
+    function p($data) {
+        echo '<pre>';
+        print_r($data);
+        exit;
+    }
+}
+
