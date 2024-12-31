@@ -1,8 +1,8 @@
 <?php
 
-if (!function_exists('function_name')) {
-    function function_name($params)
-    {
-        //  Your logic        
+
+if (!function_exists('formatCurrency')) {
+    function formatCurrency($amount) {
+        return '$' . number_format($amount, 2);
     }
 }

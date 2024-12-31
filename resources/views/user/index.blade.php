@@ -3,6 +3,6 @@
 @section('title') Hello @endsection
 
 @section('content')
-   
+
 @endsection
 
