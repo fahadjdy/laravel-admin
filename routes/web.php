@@ -2,12 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-// User routes
+
 Route::get('/', [\App\Http\Controllers\User\Home::class, 'index']);
 
+require base_path('routes/admin/admin.php');
 
-// Admin routes 
-// Route::group(['prefix' => 'admin'], function () {
-//     Route::get('/login', [\App\Http\Controllers\User\Home::class, 'index']);
-// });
+
 
