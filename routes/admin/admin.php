@@ -3,10 +3,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Admin;
-use App\Http\Middleware\Admin\AdminAuth;
 
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/login', [Admin::class, 'index']);
+    Route::get('/login', [Admin::class, 'login']);
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => 'adminAuth'], function () {
+    Route::get('/dashboard', [Admin::class, 'dashboard']);
+    Route::get('/profile', [Admin::class, 'profile']);
 });
 
  

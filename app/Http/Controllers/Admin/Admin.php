@@ -8,12 +8,16 @@ use Illuminate\Http\Request;
 class Admin extends Controller
 {
 
-    public function index()
+    public function login()
     {
         return view('admin.login');
     }
     public function dashboard()
     {
         return view('admin.dashboard');
+    }
+    public function profile()
+    {
+        return view('admin.profile');
     }
 }
