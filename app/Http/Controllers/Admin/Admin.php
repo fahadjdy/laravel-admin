@@ -12,6 +12,10 @@ class Admin extends Controller
     {
         return view('admin.login');
     }
+    public function checkLogin()
+    {
+        // return view('admin.login');
+    }
     public function dashboard()
     {
         return view('admin.dashboard');
