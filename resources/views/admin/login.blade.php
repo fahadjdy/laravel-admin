@@ -1,30 +1,27 @@
 @extends('layout.admin.base')
+@section('head')
+    <link rel="stylesheet" href="{{asset('admin/css/login.css')}}">
+@endsection
 
 @section('content')
-<style>
-    .form-control:focus {
-        border-color: #ccc !important;
-        /* Keep the default border color */
-        box-shadow: none !important;
-        /* Remove the glowing shadow */
-    }
-</style>
+
 <section id="login">
     <div class="container d-flex justify-content-center align-items-center vh-100 bg-gradient-primary">
-        <div style="width: 300px;">
-            <div class="card-body">
-                <form method="POST" action="{{ url('admin/kcheckLogin') }}" class="border p-4 rounded">
+            <div class="card-body d-flex justify-content-center align-items-center">
+                <form method="POST" action="{{ url('admin/kcheckLogin') }}" class="border p-4 rounded login-form">
+                    <h3 class="text-center mb-4">Admin Login</h3>
                     @csrf
                     <div class="mb-3">
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
-                            <input type="text" class="form-control" placeholder="Username" required>
+                            <input type="text" class="form-control" placeholder="Username" name="username" id="username" required>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <div class="input-group">
+                        <div class="input-group eye-wraper">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input type="password" class="form-control" placeholder="Password" required>
+                            <input type="password" class="form-control password" placeholder="Password" name="password" id="password" required>
+                            <span onclick="togglePasswordVisibility()" class="eye-toggle"><i class="fas fa-eye" id="eye-icon"></i></span>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -32,8 +29,11 @@
                     </div>
                 </form>
             </div>
-        </div>
     </div>
 </section>
 
+@endsection
+
+@section('js')
+<script src="{{asset('admin/js/login.js')}}"></script>
 @endsection

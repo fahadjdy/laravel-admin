@@ -1,6 +1,8 @@
 :root{
-    --primary-color     : #2c637a;
-    --secondary-color   : #c2edff;
+    --primary-color     : #123524;
+    --secondary-color   : #85A947;
+    --border-color      : #85A947;
+    --light-color       : #EFE3C2;
     --white-color       : #fff;
     --dark-color        : #000;
 }
@@ -10,8 +12,14 @@
     border: none !important;
     color: var(--white-color) !important;
 }
+
 .btn-primary:hover{
     background-color: var(--secondary-color) !important;
     color: var(--dark-color) !important;
     border: none !important; 
+}
+
+.form-control:focus {
+    border-color: var(--border-color) !important;
+    box-shadow: none !important;
 }
