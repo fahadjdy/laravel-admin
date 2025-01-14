@@ -15,9 +15,9 @@ class AdminAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $isLoggedIn = false;
-        if(!$isLoggedIn){
-            return redirect()->route('admin.login')->with('error', 'You must be logged in to access this page.');
+        $isAdmin = true;        
+        if(!$isAdmin){
+            return redirect()->to('admin/login')->with('error', 'You must be logged in to access this page.');
         }
 
         return $next($request);

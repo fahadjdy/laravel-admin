@@ -12,6 +12,12 @@ class Admin extends Controller
     {
         return view('admin.login');
     }
+    public function logout()
+    {
+     
+        session()->flush();
+        return redirect('admin/login');
+    }
     public function checkLogin()
     {
         // return view('admin.login');
