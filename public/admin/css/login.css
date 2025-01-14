@@ -1,17 +1,25 @@
-.login-form{
+#login .login-form{
     width: 400px !important;
     padding: 30px 40px  !important;
 }
-.input-group-text{
+#login .input-group-text{
     background-color: var(--primary-color);
     color: var(--white-color);
 }
-.eye-wraper{
+#login .eye-wraper{
     position:relative
 }
-.eye-toggle{
+#login .eye-toggle{
     position: absolute;right: 10px;top:23%
 }
-.password {
+#login .password {
     padding-right: 30px !important;
 }
+#login .logo {
+    max-width: 80px;
+}
+#login .title{
+    font-size: 25px !important;
+    letter-spacing: 4px;
+}
+

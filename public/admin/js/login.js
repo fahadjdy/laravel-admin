@@ -1,3 +1,15 @@
+
+
+
+
+
+
+/**
+ * @author : Fahadjdy
+ * @function : togglePasswordVisibility
+ * @description : Toggles the visibility of the password input field. When the password is hidden, the function changes the input type to "text" and updates the eye icon to indicate that the password is visible. Conversely, when the password is visible, it changes the input type back to "password" and updates the eye icon to indicate that the password is hidden.
+ * @use : just add "js-text-field" class at input field
+*/
 function togglePasswordVisibility() {
         
     var passwordInput = document.getElementById('password');
