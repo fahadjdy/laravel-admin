@@ -1,10 +1,20 @@
-@extends('layout.admin.base')
-@section('head')
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Login </title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" href="{{ asset('author/fhd-favicon.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}">
     <link rel="stylesheet" href="{{asset('admin/css/pages/login.css')}}">
-@endsection
-
-@section('content')
-
+</head>
+<body>
+   
+    
 <section id="login">
     <div class="container d-flex justify-content-center align-items-center vh-100 bg-gradient-primary">
         <div class="card-body d-flex justify-content-center align-items-center">
@@ -34,9 +44,16 @@
         </div>
     </div>
 </section>
+    
+    <script src="{{asset('admin/js/pages/login.js')}}"></script>   
+    <script src="{{asset('admin/js/common.js')}}"></script>
+    <script src="{{asset('admin/js/constant.js')}}"></script>
+</body>
+</html>
 
-@endsection
 
-@section('js')
-<script src="{{asset('admin/js/pages/login.js')}}"></script>
-@endsection
+
+
+
+
+
