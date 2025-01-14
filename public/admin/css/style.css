@@ -15,6 +15,14 @@
     font-family: "Poppins", serif !important;
 }
 
+ul{
+    list-style: none;
+}
+
+a{
+    text-decoration: none !important;
+}
+
 .btn-primary{
     background-color: var(--primary-color) !important;
     border: none !important;
@@ -32,6 +40,30 @@
     border-color: var(--border-color) !important;
     box-shadow: none !important;
 }
+
+/* breadcrumb  [Start]*/
+#breadcrumb-component{
+    margin-left: -13px;
+}
+
+#breadcrumb-component .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    background-color: transparent;
+  }
+  
+  #breadcrumb-component .breadcrumb-item a {
+    color: var(--primary-color);   
+  }
+  
+  #breadcrumb-component .breadcrumb-item a:not(:hover) {
+      text-decoration: none;
+  }
+  
+/* breadcrumb  [End]*/
+  
 
 /* Footer css [Start] */
 .author{

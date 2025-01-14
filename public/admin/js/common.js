@@ -186,4 +186,3 @@ document.querySelectorAll('.js-number-field').forEach(function(input) {
       }
   });
 });
-
