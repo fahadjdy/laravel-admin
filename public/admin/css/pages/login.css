@@ -1,6 +1,13 @@
+#login {
+    background-image: url('../../img/auth/login-bg.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
 #login .login-form{
     width: 400px !important;
     padding: 30px 40px  !important;
+    background-color: #fff;
 }
 #login .input-group-text{
     background-color: var(--primary-color);

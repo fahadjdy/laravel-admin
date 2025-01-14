@@ -1,6 +1,6 @@
 @extends('layout.admin.base')
 @section('head')
-    <link rel="stylesheet" href="{{asset('admin/css/login.css')}}">
+    <link rel="stylesheet" href="{{asset('admin/css/pages/login.css')}}">
 @endsection
 
 @section('content')
@@ -17,7 +17,7 @@
                 <div class="mb-3">
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
-                        <input type="text" class="form-control" placeholder="Username" name="username" id="username" required>
+                        <input type="text" class="form-control js-text-field" placeholder="Username" name="username" id="username" required>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -38,5 +38,5 @@
 @endsection
 
 @section('js')
-<script src="{{asset('admin/js/login.js')}}"></script>
+<script src="{{asset('admin/js/pages/login.js')}}"></script>
 @endsection

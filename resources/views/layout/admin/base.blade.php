@@ -20,5 +20,6 @@
     @include('layout.admin.footer')
     <script src="{{asset('admin/js/common.js')}}"></script>
     @yield('js')
+    <script src="{{asset('admin/js/constant.js')}}"></script>
 </body>
 </html>
