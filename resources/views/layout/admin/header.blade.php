@@ -25,10 +25,7 @@
     </ul>
 </aside>
 <script>
-    document.getElementById('profileImage').addEventListener('click', function() {
-        var navMenu = document.getElementById('navMenu');
-        navMenu.style.display = navMenu.style.display === 'none' ? 'block' : 'none';
-    });
+   
 </script>
 <style>
     header{
@@ -54,6 +51,6 @@
         /* margin-left: 12px; */
         width: 90%;
         float: left;
-        padding: 12px 0px 0px 20px;
+        padding: 12px 0px 0px 25px;
     }
 </style>

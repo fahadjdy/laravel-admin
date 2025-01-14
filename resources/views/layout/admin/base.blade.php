@@ -21,5 +21,6 @@
     <script src="{{asset('admin/js/common.js')}}"></script>
     @yield('js')
     <script src="{{asset('admin/js/constant.js')}}"></script>
+    <script src="{{asset('admin/js/script.js')}}"></script>
 </body>
 </html>
