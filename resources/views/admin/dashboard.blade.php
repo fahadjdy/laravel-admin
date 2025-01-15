@@ -75,7 +75,9 @@
                     }},
                     { data: 'title' },
                     { data: 'description' },
-                    { data: 'actions' }
+                    { data: 'actions', render: function(data, type, row) {
+                        return data ? data : 'No access'; // Return action field if not empty, otherwise return empty string
+                    }}
                 ],
                 responsive: true // Make the table responsive
             });

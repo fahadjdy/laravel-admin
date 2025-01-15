@@ -33,10 +33,13 @@ class Admin extends Controller
 
     public function tableData()
     {
+        $canEdit = false; 
+        $canDelete = false; 
+
         $data = [
-            ['title' => 'Sample Title 1', 'description' => 'Sample Description 1', 'actions' => '<button class="btn btn-secondary">Edit</button> <button class="btn btn-danger">Delete</button>'],
-            ['title' => 'Sample Title 2', 'description' => 'Sample Description 2', 'actions' => '<button class="btn btn-secondary">Edit</button> <button class="btn btn-danger">Delete</button>'],
-            ['title' => 'Sample Title 3', 'description' => 'Sample Description 3', 'actions' => '<button class="btn btn-secondary">Edit</button> <button class="btn btn-danger">Delete</button>'],
+            ['title' => 'Sample Title 1', 'description' => 'Sample Description 1', 'actions' => ($canEdit ? '<button class="btn btn-secondary">Edit</button>' : '') . ($canDelete ? '<button class="btn btn-danger">Delete</button>' : '')],
+            ['title' => 'Sample Title 2', 'description' => 'Sample Description 2', 'actions' => ($canEdit ? '<button class="btn btn-secondary">Edit</button>' : '') . ($canDelete ? '<button class="btn btn-danger">Delete</button>' : '')],
+            ['title' => 'Sample Title 3', 'description' => 'Sample Description 3', 'actions' => ($canEdit ? '<button class="btn btn-secondary">Edit</button>' : '') . ($canDelete ? '<button class="btn btn-danger">Delete</button>' : '')],
         ];
 
         return response()->json([
