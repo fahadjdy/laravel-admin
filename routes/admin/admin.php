@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Admin;
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/login', [Admin::class, 'login']);
+    Route::post('/table-data', [Admin::class, 'tableData']);
     Route::post('/checkLogin', [Admin::class, 'checkLogin']);
 });
 

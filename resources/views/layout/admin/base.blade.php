@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="icon" href="{{ asset('author/fhd-favicon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     @yield('head')
 </head>
 <body>
