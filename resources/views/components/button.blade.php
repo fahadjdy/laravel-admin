@@ -1,4 +1,4 @@
-<button class="btn {{ $type ?? 'btn-primary' }} {{ $size ?? 'btn-md' }}">
-    @if(isset($icon)) <i class="{{ $icon }}"></i> @endif
+<button class="btn btn-{{ $type ?? 'primary' }}">
+    @if(isset($icon)) <i class="fa fa-{{ $icon }}"></i> @endif
     {{ $slot }}
 </button>

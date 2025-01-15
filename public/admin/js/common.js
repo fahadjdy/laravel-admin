@@ -148,7 +148,7 @@ document.querySelectorAll('.js-text-field').forEach(function(input) {
 /**
 * @author : Fahadjdy
 * @description : this function is used to validate input fields by allowing only valid email.
-* @use : just add "js-text-field" class at input field
+* @use : just add "js-email-field" class at input field
 */
 document.querySelectorAll('.js-email-field').forEach(function(input) {
   input.addEventListener('input', function() {
@@ -169,7 +169,7 @@ document.querySelectorAll('.js-email-field').forEach(function(input) {
 /**
 * @author : Fahadjdy
 * @description : This function validates input fields by allowing only numeric characters (0-9).
-* @use : just add "js-text-field" class at input field
+* @use : just add "js-number-field" class at input field
 */
 document.querySelectorAll('.js-number-field').forEach(function(input) {
   input.addEventListener('input', function() {

@@ -1,9 +1,4 @@
 
-
-
-
-
-
 /**
  * @author : Fahadjdy
  * @function : togglePasswordVisibility

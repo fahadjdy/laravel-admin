@@ -4,8 +4,8 @@
     
 
     <!-- breadcrumb  -->
-    <x-breadcrumb page="User"></x-breadcrumb>
-
+    <x-breadcrumb page="User Listing"></x-breadcrumb>
+   
 
     <br>
     <br>
@@ -23,9 +23,9 @@
 
 
     <!-- buttons  -->
-    <button class=" btn btn-primary"> <i class="fa fa-plus"></i>Add  </button>
-    <button class=" btn btn-secondary"> <i class="fa fa-pen"></i>Edit </button>
-    <button class=" btn btn-danger"> <i class="fa fa-trash"></i>Delete </button>
+    <x-button type="primary" icon="plus" > Add User </x-button>
+    <x-button type="secondary" icon="pen"> Edit User </x-button>
+    <x-button type="danger" icon="trash"> Delete User </x-button>
 
 
     <br>

@@ -4,11 +4,10 @@
 :root{
     --primary-color     : #123524;
     --secondary-color   : #85A947;
-    --border-color      : #85A947;
     --light-color       : #EFE3C2;
-    --white-color       : #fff;
     --dark-color        : #000;
-    --danger-color      : #dc3545;
+    --danger-color      : #cd313e;
+    --white-color       : #fff;
 }
 
 
@@ -56,6 +55,7 @@ a{
 }
 
 .btn-danger{
+    background-color: var(--danger-color);
     border: 1px solid var(--danger-color);
 }
 .btn-danger:hover{
