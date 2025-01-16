@@ -9,10 +9,9 @@
     position: absolute;
     right: 50px;">
             <ul>
-                <li><a href="{{ url('/admin/dashboard') }}">Dashboard</a></li>
-                <li><a href="{{ url('/admin/users') }}">Users</a></li>
-                <li><a href="{{ url('/admin/settings') }}">Settings</a></li>
-                <li><a href="{{ url('/admin/logout') }}">Logout</a></li>
+                <li><a href="{{ url('/admin/settings') }}"> <i class="fa fa-user mr-1"></i> Profile</a></li>
+                <li><a href="{{ url('/admin/settings') }}"> <i class="fa fa-cog mr-1"></i> Setting</a></li>
+                <li><a href="{{ url('/admin/logout') }}"> <i class="fas fa-sign-out-alt mr-1" aria-hidden="true"></i> Logout</a></li>
             </ul>
         </nav>
     </div>
@@ -35,10 +34,33 @@
         margin: 0px;
         padding: 0px 15px;
         background-color: #fff;
-        box-shadow: 0px 4px 28px 6px var(--light-color);
+        box-shadow: 0px -1px 21px -3px var(--light-color)
     }
     header .setting img{
         cursor: pointer;position:relative;max-width:50px;
+    }
+    header .setting ul li:nth-child(1){
+        border-top: 1px solid var(--primary-color);
+    }
+    header .setting ul li{
+        background-color: var(--white-color);
+        width: 100%;
+        padding: 8px 30px;
+        border-bottom: 1px solid var(--primary-color);
+        transition: background-color 0.4s ease, color 0.4s ease !important;
+        /* box-shadow: -3px -2px 13px -9px var(--dark-color); */
+    }
+
+    header .setting ul li a{
+        color: var(--primary-color) !important;
+        display: inline-block;
+    }
+    header .setting ul li:hover{
+        background-color: var(--light-color);
+        transition: background-color 0.4s ease, color 0.4s ease !important;;
+    }
+    header .setting ul li:hover a{
+        color:var(--primary-color) !important;
     }
     aside{
         width: 10%;
