@@ -13,6 +13,7 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'admin', 'middleware' => 'adminAuth'], function () {
     Route::get('/dashboard', [Admin::class, 'dashboard']);
     Route::get('/profile', [Admin::class, 'profile']);
+    Route::get('/category', [Admin::class, 'category']);
     Route::get('/logout', [Admin::class, 'logout']);
 });
 
