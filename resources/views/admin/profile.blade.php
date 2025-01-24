@@ -1,6 +1,9 @@
 @extends('layout.admin.base')
 
 @section('content')
-    Admin profile Page
+   
+    <!-- breadcrumb  -->
+    <x-breadcrumb page="Profile"></x-breadcrumb>
+   
 @endsection
 
