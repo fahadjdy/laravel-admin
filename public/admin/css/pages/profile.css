@@ -25,3 +25,22 @@
 .edit-btn-bio , .save-btn-bio{
   float: right;
 }
+
+.profile-img-overlay{
+  top: 0px;
+  right: 0px;
+}
+
+.profile-img-overlay .circle{
+  background-color: #fff !important;
+  padding: 5px;
+  border-radius: 18px;
+  line-height: 14px;
+  border: 1px solid #000;
+}
+
+.profile-img img{
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+}

@@ -8,6 +8,24 @@
 <x-breadcrumb page="Profile"></x-breadcrumb>
 
 <section id="profile">
+    <div class="card my-3 p-3">
+        <div class="d-flex align-items-center">
+            <div class="profile-img  position-relative">
+                <img src="{{ asset('admin/img/auth/login-bg.jpg') }}" alt="profile" class="img-fluid rounded-circle" id="profile-img">
+                <div class="profile-img-overlay position-absolute">
+                    <div class="circle">
+                        <i class="fa-duotone fa-solid fa-camera" id="profile-icon"></i>
+                        <input type="file" class="d-none" id="profile-file" accept="image/*">
+                    </div>
+
+                </div>
+            </div>
+            <div class="profile-text ms-3">
+                <h2> S Tech Quality Parts</h2>
+                <p>Basu</p>
+            </div>
+        </div>
+    </div>
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button class="nav-link active" id="nav-bio-tab" data-bs-toggle="tab" data-bs-target="#nav-bio" type="button" role="tab" aria-controls="nav-bio" aria-selected="true"> <i class="fa-duotone fa-solid fa-list"></i> &nbsp; Bio Data</button>
