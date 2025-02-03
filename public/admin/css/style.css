@@ -28,6 +28,21 @@ a{
     border-radius: 4px ;
 }
 
+
+.btn-light{
+    background-color:var(--light-color) !important;
+    color: var(--primary-color) !important;
+    border:1px solid var(--light-color) !important ;
+}
+
+.btn-light:hover{
+    background-color:var(--primary-color) !important;       
+    color: var(--light-color) !important;
+    border: 1px solid var(--light-color) !important;    
+    transition: background-color 0.4s ease, color 0.4s ease !important;
+}
+
+
 .btn-primary{
     background-color:var(--primary-color) !important;
     color: var(--white-color) !important;
@@ -43,7 +58,7 @@ a{
 
 .btn-secondary{
     background-color:var(--secondary-color) !important;
-    color: var(--dark-color) !important;
+    color: var(--white-color) !important;
     border:1px solid var(--secondary-color) !important ;
 }
 
@@ -57,6 +72,7 @@ a{
 .btn-danger{
     background-color: var(--danger-color);
     border: 1px solid var(--danger-color);
+    color: var(--white-color) !important;
 }
 .btn-danger:hover{
     background-color:var(--white-color) !important;       
@@ -92,6 +108,12 @@ a{
   #breadcrumb-component .breadcrumb-item a {
     color: var(--primary-color);   
   }
+  #breadcrumb-component .breadcrumb-item:nth-child(1)::before {
+    content: unset;    
+    }
+  #breadcrumb-component .breadcrumb-item::before {
+    content: '>';    
+    }
   
   #breadcrumb-component .breadcrumb-item a:not(:hover) {
       text-decoration: none;
@@ -105,3 +127,109 @@ a{
     position: fixed; bottom: 20px; right: 20px;  padding: 10px; border-radius: 5px; z-index: 1000;font-size: 12px;
 }
 /* Footer css [End] */
+
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px;
+    padding: 12px 20px 3px 20px;
+    background-color: #fff;
+    box-shadow: 0px -1px 21px -3px var(--light-color)
+}
+
+aside{
+    width: 220px;
+    float: left;
+    background-color:  var(--light-color);
+    padding: 8px 0px;
+    height: 100vh;
+}
+
+aside a{
+    color: var(--primary-color);
+    padding: 5px 23px;
+}
+aside a.active{
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-radius: 4px;
+}
+
+aside li{
+    line-height: 35px !important;
+    margin: 5px 0;
+}
+
+aside .toggle-gallery {
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+aside .toggle-gallery:hover {
+    color: #007bff;
+}
+
+
+aside ul > ul {
+    margin: 5px 0;
+}
+
+main{
+    /* margin-left: 12px; */
+    width: 80% !important;
+    float: left;
+    padding: 30px 0px 0px 55px;
+}
+
+
+/* datatable css [start] */
+.table{
+    padding-top: 13px !important;
+}
+.dataTables_wrapper .dataTables_paginate {
+    padding-top: unset !important;
+}
+
+#tbl_wrapper .dataTables_paginate  a{
+    
+    padding: 3px 12px !important;
+}
+
+#tbl_wrapper .dataTables_paginate  .disabled:hover{
+    background-color: unset !important;
+    color: unset !important;
+}
+#tbl_wrapper .dataTables_paginate  a.current {
+    background: var(--primary-color) !important;
+    color: var(--white-color) !important;
+    border-radius: 6px !important;
+}
+#tbl_wrapper .dataTables_paginate  a:hover{
+    background: var(--primary-color) !important;
+    color: var(--white-color) !important;
+    border-radius: 6px !important;
+}
+
+.table  th:nth-child(1){
+    border-radius: 8px 0px 0px 0px !important;
+}
+.table  th:last-child{
+    border-radius: 0px 8px 0px 0px !important;
+}
+
+.table  th{
+    padding: 5px;
+    background-color: var(--primary-color) !important;    
+    color: var(--white-color);      
+}
+
+.table tbody tr:hover {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+}
+
+/* datatable css [End] */

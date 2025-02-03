@@ -147,27 +147,6 @@ document.querySelectorAll('.js-text-field').forEach(function(input) {
 
 /**
 * @author : Fahadjdy
-* @description : this function is used to validate input fields by allowing only valid email.
-* @use : just add "js-email-field" class at input field
-*/
-document.querySelectorAll('.js-email-field').forEach(function(input) {
-  input.addEventListener('input', function() {
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailPattern.test(this.value)) {
-          this.value = '';
-          createToast({
-              status: 'fail',
-              icon: 'fa-ban', // FontAwesome warning icon
-              title: 'Not Allowed',
-              message: 'Only allowing valid email!',
-              duration: 5000
-          });
-      }
-  });
-});
-
-/**
-* @author : Fahadjdy
 * @description : This function validates input fields by allowing only numeric characters (0-9).
 * @use : just add "js-number-field" class at input field
 */
