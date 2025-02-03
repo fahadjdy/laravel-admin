@@ -8,109 +8,27 @@
 <x-breadcrumb page="Profile"></x-breadcrumb>
 
 <section id="profile">
-    <div class="container">
-    <div class="profile-header">
-        <div class="profile-img">
-            <img src="./bg.jpg" width="150" alt="Profile Image">
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-bio-tab" data-bs-toggle="tab" data-bs-target="#nav-bio" type="button" role="tab" aria-controls="nav-bio" aria-selected="true"> <i class="fa-duotone fa-solid fa-list"></i> &nbsp; Bio Data</button>
+            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"> <i class="fa-duotone fa-solid fa-user"></i> &nbsp; Profile</button>
+            <button class="nav-link" id="nav-change-psw-tab" data-bs-toggle="tab" data-bs-target="#nav-change-psw" type="button" role="tab" aria-controls="nav-change-psw" aria-selected="false"> <i class="fa-duotone fa-solid fa-key"></i> &nbsp; Change Password</button>
         </div>
-        <div class="profile-nav-info">
-        <h3 class="user-name">Bright Code</h3>
-        <div class="address">
-            <p id="state" class="state">New York,</p>
-            <span id="country" class="country">USA.</span>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active p-3" id="nav-bio" role="tabpanel" aria-labelledby="nav-bio-tab">
+            <span class="d-flex"> <label for="">Name </label> :
+            <input type="text" id="name" name="name" class="form-control d-block w-25 mx-2" value=" S Tech Quality Parts"> </span>
+            <i class="fa fa-pen"></i>
+            <label for=""> S Tech Quality Parts </label> 
+          
         </div>
-
-        </div>
-        <div class="profile-option">
-        <div class="notification">
-            <i class="fa fa-bell"></i>
-            <span class="alert-message">3</span>
-        </div>
-        </div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+        <div class="tab-pane fade" id="nav-change-psw" role="tabpanel" aria-labelledby="nav-change-psw-tab">...</div>
     </div>
-
-    <div class="main-bd">
-        <div class="left-side">
-        <div class="profile-side">
-            <p class="mobile-no"><i class="fa fa-phone"></i> +23470xxxxx700</p>
-            <p class="user-mail"><i class="fa fa-envelope"></i> Brightisaac80@gmail.com</p>
-            <div class="user-bio">
-            <h3>Bio</h3>
-            <p class="bio">
-                Lorem ipsum dolor sit amet, hello how consectetur adipisicing elit. Sint consectetur provident magni yohoho consequuntur, voluptatibus ghdfff exercitationem at quis similique. Optio, amet!
-            </p>
-            </div>
-            <div class="profile-btn">
-            <button class="chatbtn" id="chatBtn"><i class="fa fa-comment"></i> Chat</button>
-            <button class="createbtn" id="Create-post"><i class="fa fa-plus"></i> Create</button>
-            </div>
-            <div class="user-rating">
-            <h3 class="rating">4.5</h3>
-            <div class="rate">
-                <div class="star-outer">
-                <div class="star-inner">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                </div>
-                </div>
-                <span class="no-of-user-rate"><span>123</span>&nbsp;&nbsp;reviews</span>
-            </div>
-
-            </div>
-        </div>
-
-        </div>
-        <div class="right-side">
-
-        <div class="nav">
-            <ul>
-            <li onclick="tabs(0)" class="user-post active">Deatils</li>
-            <li onclick="tabs(1)" class="user-review">Feature</li>
-            <li onclick="tabs(2)" class="user-setting">password</li>
-            </ul>
-        </div>
-        <div class="profile-body">
-
-            <!-- // first tab //-->
-            <div class="profile-posts tab">
-                <div class="mb-3">
-                    <label class="form-label">Choose Logo</label>
-                    <input type="file" class=" p-2 w-100" id="logo" name="logo">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Company Name</label>
-                    <input type="text" class=" p-2 w-100" id="name" name="name">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">About Us</label>
-                    <textarea name="about_us" id="about_us" cols="4" rows="6" class="w-100 "></textarea>
-                </div>
-            </div>
-
-            <!-- // second tab //-->
-            <div class="profile-reviews tab">
-                <h1>User reviews</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam pariatur officia, aperiam quidem quasi, tenetur molestiae. Architecto mollitia laborum possimus iste esse. Perferendis tempora consectetur, quae qui nihil voluptas. Maiores debitis
-                    repellendus excepturi quisquam temporibus quam nobis voluptatem, reiciendis distinctio deserunt vitae! Maxime provident, distinctio animi commodi nemo, eveniet fugit porro quos nesciunt quidem a, corporis nisi dolorum minus sit eaque error
-                    sequi ullam. Quidem ut fugiat, praesentium velit aliquam!</p>
-            </div>
-
-            <!-- // third tab //-->
-            <div class="profile-settings tab">
-                <div class="account-setting">
-                    <h1>Acount Setting</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit omnis eaque, expedita nostrum, facere libero provident laudantium. Quis, hic doloribus! Laboriosam nemo tempora praesentium. Culpa quo velit omnis, debitis maxime, sequi
-                    animi dolores commodi odio placeat, magnam, cupiditate facilis impedit veniam? Soluta aliquam excepturi illum natus adipisci ipsum quo, voluptatem, nemo, commodi, molestiae doloribus magni et. Cum, saepe enim quam voluptatum vel debitis
-                    nihil, recusandae, omnis officiis tenetur, ullam rerum.</p>
-                </div>
-            </div>
-        </div>
-        </div>
-    </div>
-    </div>
+    <hr>
+            <button class="btn btn-primary edit-btn-bio"  id="edit-btn-bio"> Edit <i class="fa-duotone fa-solid fa-pen-line"></i> </button>
+            <button class="btn btn-primary save-btn-bio"  id="save-btn-bio"> Save <i class="fa-duotone fa-solid fa-floppy-disk"></i> </button>
 </section>
 
 @endsection
