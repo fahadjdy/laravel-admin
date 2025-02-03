@@ -29,6 +29,19 @@ a{
 }
 
 
+.btn-light{
+    background-color:var(--light-color) !important;
+    color: var(--primary-color) !important;
+    border:1px solid var(--light-color) !important ;
+}
+
+.btn-light:hover{
+    background-color:var(--primary-color) !important;       
+    color: var(--light-color) !important;
+    border: 1px solid var(--light-color) !important;    
+    transition: background-color 0.4s ease, color 0.4s ease !important;
+}
+
 
 .btn-primary{
     background-color:var(--primary-color) !important;
