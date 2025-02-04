@@ -21,17 +21,29 @@
   border-left: 1px solid var(--primary-color) !important;
   border-right: 1px solid var(--primary-color) !important;
 }
+.save-btn{
+  display: none;
+}
 
-.edit-btn-bio , .save-btn-bio{
+.edit-btn , .save-btn{
   float: right;
 }
 
-.profile-img-overlay{
+.profile-img-overlay {
   top: 0px;
   right: 0px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+  border-radius: 18px;
 }
 
-.profile-img-overlay .circle{
+.favicon-img-overlay{
+  top: 0px;
+  left:53px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+  border-radius: 18px;
+}
+
+.profile-img-overlay,.favicon-img-overlay .circle{
   background-color: #fff !important;
   padding: 5px;
   border-radius: 18px;
@@ -43,4 +55,21 @@
   height: 100px;
   width: 100px;
   object-fit: cover;
+}
+
+.admin-name span{
+  color: var(--primary-color);
+}
+.admin-name p{
+  color: var(--muted);
+}
+
+.bio-data-table input{
+  line-height: 10px !important;
+  padding: 0px 10px !important;
+  margin: 0px !important;
+}
+
+.bio-data-table .bio-data-label{
+  line-height: 17px !important;
 }
