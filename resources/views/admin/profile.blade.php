@@ -2,110 +2,68 @@
 
 @section('content')
 
-    @php $profile = (object) $profile; @endphp 
-   
-    <!-- breadcrumb  -->
-    <x-breadcrumb page="Profile"></x-breadcrumb>
-    
+@php $profile = (object) $profile; @endphp
 
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
+<!-- breadcrumb  -->
+<x-breadcrumb page="Profile"></x-breadcrumb>
 
-        <form action="{{ url('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
+<section id="profile">
+    <div class="card my-3 p-3">
+        <div class="d-flex align-items-center">
+            <div class="profile-img  position-relative">
+                <img src="{{ asset('admin/img/auth/login-bg.jpg') }}" alt="profile" class="img-fluid rounded-circle" id="profile-img">
+                <div class="profile-img-overlay position-absolute">
+                    <div class="circle">
+                        <i class="fa-duotone fa-solid fa-camera" id="profile-icon"></i>
+                        <input type="file" class="d-none" id="profile-file" accept="image/*">
+                    </div>
 
-            <!-- Logo -->
-            <div class="mb-3">
-                <label for="logo" class="form-label">Logo</label>
-                <input type="file" class="form-control" id="logo" name="logo">
-                @if ($profile->logo)
-                    <img src="{{ asset('storage/' . $profile->logo) }}" alt="Logo" height="50">
-                @endif
+                </div>
             </div>
-
-            <!-- Favicon -->
-            <div class="mb-3">
-                <label for="favicon" class="form-label">Favicon</label>
-                <input type="file" class="form-control" id="favicon" name="favicon">
-                @if ($profile->favicon)
-                    <img src="{{ asset('storage/' . $profile->favicon) }}" alt="Favicon" height="50">
-                @endif
+            <div class="profile-text ms-3">
+                <h2> S Tech Quality Parts</h2>
+                <p>Basu</p>
             </div>
+        </div>
+    </div>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-bio-tab" data-bs-toggle="tab" data-bs-target="#nav-bio" type="button" role="tab" aria-controls="nav-bio" aria-selected="true"> <i class="fa-duotone fa-solid fa-list"></i> &nbsp; Bio Data</button>
+            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"> <i class="fa-duotone fa-solid fa-user"></i> &nbsp; Profile</button>
+            <button class="nav-link" id="nav-change-psw-tab" data-bs-toggle="tab" data-bs-target="#nav-change-psw" type="button" role="tab" aria-controls="nav-change-psw" aria-selected="false"> <i class="fa-duotone fa-solid fa-key"></i> &nbsp; Change Password</button>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active p-3" id="nav-bio" role="tabpanel" aria-labelledby="nav-bio-tab">
+            <span class="d-flex"> <label for="">Name </label> :
+            <input type="text" id="name" name="name" class="form-control d-block w-25 mx-2" value=" S Tech Quality Parts"> </span>
+            <i class="fa fa-pen"></i>
+            <label for=""> S Tech Quality Parts </label> 
+          
+        </div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+        <div class="tab-pane fade" id="nav-change-psw" role="tabpanel" aria-labelledby="nav-change-psw-tab">...</div>
+    </div>
+    <hr>
+            <button class="btn btn-primary edit-btn-bio"  id="edit-btn-bio"> Edit <i class="fa-duotone fa-solid fa-pen-line"></i> </button>
+            <button class="btn btn-primary save-btn-bio"  id="save-btn-bio"> Save <i class="fa-duotone fa-solid fa-floppy-disk"></i> </button>
+</section>
 
-            <!-- Name -->
-            <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ $profile->name }}" required>
-            </div>
-
-            <!-- Slogan -->
-            <div class="mb-3">
-                <label for="slogan" class="form-label">Slogan</label>
-                <input type="text" class="form-control" id="slogan" name="slogan" value="{{ $profile->slogan }}">
-            </div>
-
-            <!-- Email -->
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ $profile->email }}" required>
-            </div>
-
-            <!-- About Content -->
-            <div class="mb-3">
-                <label for="about_content" class="form-label">About Content</label>
-                <textarea class="form-control" id="about_content" name="about_content" rows="5">{{ $profile->about_content }}</textarea>
-            </div>
-
-            <!-- About Image -->
-            <div class="mb-3">
-                <label for="about_image" class="form-label">About Image</label>
-                <input type="file" class="form-control" id="about_image" name="about_image">
-                @if ($profile->about_image)
-                    <img src="{{ asset('storage/' . $profile->about_image) }}" alt="About Image" height="100">
-                @endif
-            </div>
-
-            <!-- Checkbox Options -->
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="watermark_images" name="watermark_images" {{ $profile->watermark_images ? 'checked' : '' }}>
-                <label class="form-check-label" for="watermark_images">Enable Watermark for Images</label>
-            </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="feature_x" name="feature_x" {{ $profile->feature_x ? 'checked' : '' }}>
-                <label class="form-check-label" for="feature_x">Enable Feature X</label>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-        </form>
-
-        <hr>
-
-        <h2>Change Password</h2>
-        <form action="{{ url('admin.profile.change_password') }}" method="POST">
-            @csrf
-
-            <!-- Current Password -->
-            <div class="mb-3">
-                <label for="current_password" class="form-label">Current Password</label>
-                <input type="password" class="form-control" id="current_password" name="current_password" required>
-            </div>
-
-            <!-- New Password -->
-            <div class="mb-3">
-                <label for="new_password" class="form-label">New Password</label>
-                <input type="password" class="form-control" id="new_password" name="new_password" required>
-            </div>
-
-            <!-- Confirm New Password -->
-            <div class="mb-3">
-                <label for="new_password_confirmation" class="form-label">Confirm New Password</label>
-                <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" required>
-            </div>
-
-            <button type="submit" class="btn btn-warning">Change Password</button>
-        </form>
 @endsection
 
+@section('js')
+<link rel="stylesheet" href="{{asset('admin/css/pages/profile.css')}}">
+<script src="{{asset('admin/js/pages/profile.js')}}"></script>
+@endsection
+
+
+<!--
+Logo
+Company Name
+Company Slogan
+About us / Image
+Contact multiple
+Email
+Feature management >> is Watermark
+Change Password
+-->
