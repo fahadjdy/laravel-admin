@@ -8,6 +8,7 @@
     --dark-color        : #000;
     --danger-color      : #cd313e;
     --white-color       : #fff;
+    --muted            : #6c757d;
 }
 
 
@@ -28,6 +29,13 @@ a{
     border-radius: 4px ;
 }
 
+.text-primary{
+    color: var(--primary-color) !important;
+}
+
+.text-muted{
+    color: var(--muted) !important;
+}
 
 .btn-light{
     background-color:var(--light-color) !important;
