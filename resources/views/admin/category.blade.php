@@ -54,6 +54,29 @@
             ],
             responsive: true,
         });
+
+        $(document).on('click', '.delete-category', function() {
+            let categoryId = $(this).data('id');
+            
+            if (confirm('Are you sure you want to delete this category?')) {
+                $.ajax({
+                    url: '/admin/category/delete/' + categoryId,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}' // Ensure CSRF protection
+                    },
+                    success: function(response) {
+                        alert(response.success);
+                        $('#categoryTable').DataTable().ajax.reload(); // Reload DataTable after deletion
+                        $('#tbl').DataTable().row($(this).parents('tr')).remove().draw();
+                    },
+                    error: function(xhr) {
+                        alert('Error deleting category. Please try again.');
+                    }
+                });
+            }
+        });
+
     });
 </script>
 

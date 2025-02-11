@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\CategoryModel;
 use Illuminate\Support\Facades\Validator;
+use Storage;
 
 class Category extends Controller
 {
@@ -90,6 +91,22 @@ class Category extends Controller
     }   
 
 
+    public function destroy($id)
+    {
+        $category = CategoryModel::findOrFail($id);
+
+        // Delete associated image (if stored in the filesystem)
+        if ($category->image) {
+            if (file_exists(    public_path( $category->image))) {
+                unlink(public_path( $category->image));
+            }
+        }
+
+        $category->delete();
+
+        return response()->json(['success' => 'Category deleted successfully.']);
+    }
+
        
     private function saveCategory(Request $request, CategoryModel $category)
     {
@@ -112,7 +129,7 @@ class Category extends Controller
         $category->content = $request->content;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imageName = createSlug($request->name).'_'.time() . '.' . $image->getClientOriginalExtension();
             $imagePath = 'admin/img/category/' . $imageName;
     
             // Remove old image if exists
