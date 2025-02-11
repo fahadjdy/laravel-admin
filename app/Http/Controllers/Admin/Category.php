@@ -115,6 +115,11 @@ class Category extends Controller
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = 'admin/img/category/' . $imageName;
     
+            // Remove old image if exists
+            if ($category->image && file_exists(public_path($category->image))) {
+                unlink(public_path($category->image));
+            }
+    
             $image->move(public_path('admin/img/category'), $imageName);
             $category->image = $imagePath;
         }
