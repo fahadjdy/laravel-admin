@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\User\Home::class, 'index']);
 
-require base_path('routes/admin/admin.php');
+include_once __DIR__.'/admin/admin.php';
+
 
 
 
