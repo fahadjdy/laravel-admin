@@ -12,42 +12,50 @@
         <thead>
             <tr>
                 <th scope="col" width="5%">#</th>
-                <th scope="col" width="25%">Title</th>
-                <th scope="col" width="45%">Description</th>
-                <th scope="col" width="25%">Actions</th>
+                <th scope="col" width="20%">Category Name</th>
+                <th scope="col" width="15%">Parent Category</th>
+                <th scope="col" width="10%">Status</th>
+                <th scope="col" width="20%">Image</th>
+                <th scope="col" width="30%">Actions</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Data will be populated here -->
+            <!-- Data will be populated here dynamically -->
         </tbody>
     </table>
 
+
     
     <script>
-        $(document).ready(function() {
-            $('#tbl').DataTable({
-                serverSide: true,
-                processing: true,
-                ajax: {
-                    url: location.origin + '/admin/table-data', // Adjust the URL to your API endpoint
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
-                    }
-                },
-                columns: [
-                    { data: null, render: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1; // Auto-incrementing index
-                    }},
-                    { data: 'title' },
-                    { data: 'description' , orderable: false },
-                    { data: 'actions', render: function(data, type, row) {
-                        return data ? data : 'No access'; // Return action field if not empty, otherwise return empty string
-                    }, orderable: false}
-                ],
-                responsive: true,
-            });
+    $(document).ready(function() {
+        $('#tbl').DataTable({
+            serverSide: true,
+            processing: true,
+            ajax: {
+                url: location.origin + '/admin/category/getAjaxCategory',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+                }
+            },
+            columns: [
+                { data: null, render: function(data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1; 
+                }},
+                { data: 'name' },
+                { data: 'parent_name', defaultContent: 'None' }, 
+                { data: 'status', render: function(data) {
+                    return data ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
+                }},
+                { data: 'image', render: function(data) {
+                    return data ? `<img src="${location.origin}/public/${data}" width="50" height="50">` : 'No Image';
+                }, orderable: false },
+                { data: 'actions', orderable: false, searchable: false }
+            ],
+            responsive: true,
         });
-    </script>
+    });
+</script>
+
 @endsection
 
