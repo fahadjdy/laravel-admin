@@ -1,53 +1,60 @@
 @extends('layout.admin.base')
 
 @section('content')
+
 <div class="container">
     <div class="card">
         <div class="card-header" style="background-color: var(--primary-color); color: var(--white-color);">
-            <h4 id="formTitle">Add Category</h4>
+            <h4 id="formTitle">{{ isset($category) ? 'Edit Category' : 'Add Category' }}</h4>
         </div>
         <div class="card-body">
             <form id="categoryForm" enctype="multipart/form-data">
-                <input type="hidden" id="category_id" name="category_id">
+                <input type="hidden" id="category_id" name="category_id" value="{{ $category->id ?? '' }}">
                 
                 <div class="mb-3">
                     <label for="parent_category" class="form-label">Parent Category</label>
                     <select class="form-control" id="parent_category" name="parent_category">
                         <option value="">Select Parent Category</option>
-                        @foreach($category as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}" {{ isset($category) && $category->parent_id == $cat->id ? 'selected' : '' }}>
+                                {{ $cat->name }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
 
                 <div class="mb-3">
                     <label for="name" class="form-label">Category Name</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ $category->name ?? '' }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="image" class="form-label">Category Image</label>
                     <input type="file" class="form-control" id="image" name="image">
+                    @if(isset($category) && $category->image)
+                        <img src="{{ asset($category->image) }}" alt="Category Image" width="100" class="mt-2">
+                    @endif
                 </div>
                 
                 <div class="mb-3">
                     <label for="status" class="form-label">Status</label>
                     <select class="form-control" id="status" name="status">
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
+                        <option value="1" {{ isset($category) && $category->status == 1 ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ isset($category) && $category->status == 0 ? 'selected' : '' }}>Inactive</option>
                     </select>
                 </div>
 
                 <div class="mb-3">
                     <label for="content" class="form-label">Content</label>
-                    <textarea id="content" name="content" class="form-control"></textarea>
+                    <textarea id="content" name="content" class="form-control">{{ $category->content ?? '' }}</textarea>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">{{ isset($category) ? 'Update' : 'Save' }}</button>
             </form>
         </div>
     </div>
 </div>
+
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

@@ -18,10 +18,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'adminAuth'], function () {
 
     Route::get('/category', [Admin::class, 'category']);
     Route::post('/category/getAjaxCategory', [Category::class, 'getAjaxCategory']);
-    Route::get('/category/add', [Category::class, 'create'])->name('category.create');
-    Route::get('/category/edit/1', [Category::class, 'create'])->name('category.create');
-    Route::post('/category/store', [Category::class, 'store'])->name('category.store');
-    Route::post('/category/update/{id}', [Category::class, 'update'])->name('category.update');
+    Route::get('/category/add', [Category::class, 'addOrEditCategory']);
+    Route::get('/category/edit/{id}', [Category::class, 'addOrEditCategory'])->name('category.edit');
+    Route::post('/category/update/{id}', [Category::class, 'update']);
+    // Route::post('/category/store', [Category::class, 'store']);
 
     Route::post('profile/update', [Admin::class, 'update'])->name('admin.profile.update');    
     Route::post('profile/change-password', [Admin::class, 'changePassword'])->name('admin.profile.change_password');
