@@ -21,7 +21,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'adminAuth'], function () {
     Route::get('/category/add', [Category::class, 'addOrEditCategory']);
     Route::get('/category/edit/{id}', [Category::class, 'addOrEditCategory'])->name('category.edit');
     Route::post('/category/update/{id}', [Category::class, 'update']);
-    // Route::post('/category/store', [Category::class, 'store']);
+    Route::post('/category/store', [Category::class, 'store']);
+    Route::delete('/category/delete/{id}', [Category::class, 'destroy'])->name('category.delete');
+
+
 
     Route::post('profile/update', [Admin::class, 'update'])->name('admin.profile.update');    
     Route::post('profile/change-password', [Admin::class, 'changePassword'])->name('admin.profile.change_password');
