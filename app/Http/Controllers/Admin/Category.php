@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\CategoryModel;
 use Illuminate\Support\Facades\Validator;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\DB;
 
 class Category extends Controller
 {
