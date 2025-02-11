@@ -9,14 +9,26 @@ use Illuminate\Support\Facades\Validator;
 
 class Category extends Controller
 {
-    public function create()
+    
+    public function addOrEditCategory($id = null)
     {
-        $category = CategoryModel::whereNull('parent_id')->get();
-        return view('admin/addOrEditCategory', compact('category'));
+        // Get parent categories for dropdown
+        $categories = CategoryModel::whereNull('parent_id')->get();
+        
+        $category = null; // Default to null for add
+        
+        // If ID is provided, fetch category details for editing
+        if ($id) {
+            $category = CategoryModel::findOrFail($id);
+        }
+// p($category);
+        return view('admin.addOrEditCategory', compact('categories', 'category'));
     }
+
 
     public function store(Request $request)
     {
+
         return $this->saveCategory($request, new CategoryModel());
     }
 
@@ -33,8 +45,28 @@ class Category extends Controller
     public function getAjaxCategory(Request $request)
     {
         if ($request->ajax()) {
-            $categories = CategoryModel::with('parent')->get();
+            // Get parameters from DataTables request
+            $draw = $request->input('draw');
+            $start = $request->input('start');  // Offset
+            $length = $request->input('length'); // Number of records to fetch
+            $searchValue = $request->input('search')['value']; // Search value
 
+            // Query categories with pagination and optional search
+            $query = CategoryModel::with('parent');
+
+            // Apply search filter
+            if (!empty($searchValue)) {
+                $query->where('name', 'LIKE', "%{$searchValue}%");
+            }
+
+            // Get total records count before filtering
+            $totalRecords = CategoryModel::count();
+            $filteredRecords = $query->count();
+
+            // Apply pagination
+            $categories = $query->skip($start)->take($length)->get();
+
+            // Format data
             $formattedCategories = $categories->map(function ($category) {
                 return [
                     'id' => $category->id,
@@ -47,16 +79,18 @@ class Category extends Controller
                 ];
             });
 
-            return response()->json(['data' => $formattedCategories]);
+            // Return JSON response
+            return response()->json([
+                "draw" => intval($draw),
+                "recordsTotal" => $totalRecords,
+                "recordsFiltered" => $filteredRecords,
+                'data' => $formattedCategories
+            ]);
         }
-    }
-
-    
-    
-    
-    
+    }   
 
 
+       
     private function saveCategory(Request $request, CategoryModel $category)
     {
         // print_r($category);exit;
