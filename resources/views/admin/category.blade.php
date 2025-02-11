@@ -48,7 +48,7 @@
                     return data ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
                 }},
                 { data: 'image', render: function(data) {
-                    return data ? `<img src="${location.origin}/public/${data}" width="50" height="50">` : 'No Image';
+                    return data ? `<img src="${location.origin}/${data}" width="50" height="50">` : 'No Image';
                 }, orderable: false },
                 { data: 'actions', orderable: false, searchable: false }
             ],
