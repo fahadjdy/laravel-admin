@@ -14,7 +14,7 @@ class Category extends Controller
     public function addOrEditCategory($id = null)
     {
         // Get parent categories for dropdown
-        $categories = CategoryModel::whereNull('parent_id')->get();
+        $categories = CategoryModel::all();
         
         $category = null; // Default to null for add
         
