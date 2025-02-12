@@ -126,6 +126,12 @@ class Category extends Controller
         if ($category->thumbnail && file_exists(public_path($category->thumbnail))) {
             unlink(public_path($category->thumbnail));
         }
+
+        // Recursively delete all subcategories and their images
+        $subcategories = CategoryModel::where('parent_id', $category->id)->get();
+        foreach ($subcategories as $subcategory) {
+            $this->destroy($subcategory->id); // Recursively call destroy
+        }
     
     
         // Finally, delete the category itself
