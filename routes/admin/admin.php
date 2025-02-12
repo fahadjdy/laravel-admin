@@ -24,6 +24,7 @@ Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function
     Route::post('/category/update/{id}', [Category::class, 'update']);
     Route::post('/category/store', [Category::class, 'store']);
     Route::delete('/category/delete/{id}', [Category::class, 'destroy'])->name('category.delete');
+    Route::delete('/category/image/delete/{id}', [Category::class, 'deleteCategoryImage']);
 
 
 

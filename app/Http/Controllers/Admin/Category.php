@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\CategoryModel;
 use Illuminate\Support\Facades\Validator;
-use Storage;
+use App\Models\Admin\CategoryImageModel;
 
 class Category extends Controller
 {
@@ -74,7 +74,7 @@ class Category extends Controller
                     'name' => $category->name,
                     'parent_name' => optional($category->parent)->name ?? 'None',
                     'status' => $category->status,
-                    'image' => $category->image,
+                    'image' => $category->thumbnail,
                     'actions' => '<a href="/admin/category/edit/' . $category->id . '" class="btn btn-sm btn-primary">Edit</a> 
                                 <button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>'
                 ];
@@ -90,59 +90,107 @@ class Category extends Controller
         }
     }   
 
+    public function deleteCategoryImage($id)
+    {
+        $image = CategoryImageModel::find($id);
+        
+        if (!$image) {
+            return response()->json(['error' => 'Image not found!'], 404);
+        }
+
+        // Delete file from storage
+        if (file_exists(public_path($image->image_path))) {
+            unlink(public_path($image->image_path));
+        }
+
+        // Delete record from DB
+        $image->delete();
+
+        return response()->json(['message' => 'Image deleted successfully!']);
+    }
 
     public function destroy($id)
     {
         $category = CategoryModel::findOrFail($id);
-
-        // Delete associated image (if stored in the filesystem)
-        if ($category->image) {
-            if (file_exists(    public_path( $category->image))) {
-                unlink(public_path( $category->image));
+    
+        // Delete all associated images from category_images table and filesystem
+        $categoryImages = CategoryImageModel::where('category_id', $category->id)->get();
+        foreach ($categoryImages as $image) {
+            if (file_exists(public_path($image->image_path))) {
+                unlink(public_path($image->image_path));
             }
+            $image->delete();
         }
-
+    
+        // Delete the category's main thumbnail image if it exists
+        if ($category->thumbnail && file_exists(public_path($category->thumbnail))) {
+            unlink(public_path($category->thumbnail));
+        }
+    
+    
+        // Finally, delete the category itself
         $category->delete();
-
-        return response()->json(['success' => 'Category deleted successfully.']);
+    
+        return response()->json(['success' => 'Category and its subcategories deleted successfully.']);
     }
+    
 
        
     private function saveCategory(Request $request, CategoryModel $category)
     {
-        // print_r($category);exit;
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'status' => 'required|boolean',
             'parent_category' => 'nullable|exists:category,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'nullable|string', // Thumbnail will be selected from uploaded images
             'content' => 'nullable|string',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], status: 422);
         }
-
+    
+        // Save category details
         $category->name = $request->name;
         $category->status = $request->status;
         $category->parent_id = $request->parent_category ?? null;
         $category->content = $request->content;
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = createSlug($request->name).'_'.time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = 'admin/img/category/' . $imageName;
-    
-            // Remove old image if exists
-            if ($category->image && file_exists(public_path($category->image))) {
-                unlink(public_path($category->image));
-            }
-    
-            $image->move(public_path('admin/img/category'), $imageName);
-            $category->image = $imagePath;
-        }
-
         $category->save();
-
+    
+        $firstImagePath = null;
+    
+        // Handle multiple image uploads
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                $imageName = createSlug($request->name) . '_' . time() . rand(1000, 9999) . '.' . $image->getClientOriginalExtension();
+                $imagePath = 'admin/img/category/' . $imageName;
+                $image->move(public_path('admin/img/category'), $imageName);
+    
+                // Save image path in category_images table
+                $savedImage = CategoryImageModel::create([
+                    'category_id' => $category->id,
+                    'image_path' => $imagePath
+                ]);
+    
+                // Store the first uploaded image path for thumbnail (if not set)
+                if ($index === 0) {
+                    $firstImagePath = $savedImage->image_path;
+                }
+            }
+        }
+    
+        // If no thumbnail was selected, set the first uploaded image as default
+        if (!$request->thumbnail && $firstImagePath) {
+            $category->thumbnail = $firstImagePath;
+            $category->save();
+        } elseif ($request->thumbnail) {
+            $category->thumbnail = $request->thumbnail;
+            $category->save();
+        }
+    
         return response()->json(['message' => 'Category saved successfully!']);
     }
+    
+    
 }
