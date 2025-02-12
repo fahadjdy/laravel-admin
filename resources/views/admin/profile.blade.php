@@ -31,6 +31,7 @@
                 <button class="nav-link active" id="nav-bio-tab" data-bs-toggle="tab" data-bs-target="#nav-bio" type="button" role="tab" aria-controls="nav-bio" aria-selected="true"> <i class="fa-duotone fa-solid fa-list"></i> &nbsp; Bio Data</button>
                 <button class="nav-link" id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about" type="button" role="tab" aria-controls="nav-about" aria-selected="false"> <i class="fa-duotone fa-solid fa-user"></i> &nbsp; About</button>
                 <button class="nav-link" id="nav-change-psw-tab" data-bs-toggle="tab" data-bs-target="#nav-change-psw" type="button" role="tab" aria-controls="nav-change-psw" aria-selected="false"> <i class="fa-duotone fa-solid fa-key"></i> &nbsp; Change Password</button>
+                <button class="nav-link" id="nav-social-media-tab" data-bs-toggle="tab" data-bs-target="#nav-social-media" type="button" role="tab" aria-controls="nav-social-media" aria-selected="false"> <i class="fa-duotone fa-solid fa-earth"></i> &nbsp; Social Media</button>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
@@ -43,6 +44,9 @@
             </div>
             <div class="tab-pane fade" id="nav-change-psw" role="tabpanel" aria-labelledby="nav-change-psw-tab">
                 @include('admin.view.profile.change-password')
+            </div>
+            <div class="tab-pane fade" id="nav-social-media" role="tabpanel" aria-labelledby="nav-social-media-tab">
+                @include('admin.view.profile.social-media')
             </div>
         </div>
         <hr>
