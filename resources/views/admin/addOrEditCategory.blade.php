@@ -77,7 +77,7 @@
     </div>
 </div>
 
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
@@ -132,10 +132,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        tinymce.init({
-            selector: '#content',
-            height: 300
-        });
+        
 
         $('#categoryForm').on('submit', function (e) {
             e.preventDefault();
