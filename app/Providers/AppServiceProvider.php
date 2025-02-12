@@ -21,7 +21,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        require_once app_path('Helpers/CodeHelper.php');
-        Route::aliasMiddleware('adminAuth', AdminAuth::class); // middleware added for adminAuth
     }
 }

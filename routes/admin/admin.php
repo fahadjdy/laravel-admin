@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Admin;
 use App\Http\Controllers\Admin\Category;
+use App\Http\Middleware\Admin\AdminAuth;
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/login', [Admin::class, 'login']);
@@ -11,7 +12,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/checkLogin', [Admin::class, 'checkLogin']);
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => 'adminAuth'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function () {
     Route::get('/dashboard', [Admin::class, 'dashboard']);
 
     Route::get('/profile', [Admin::class, 'profile']);

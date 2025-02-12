@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\User\Home::class, 'index']);
 
-include_once __DIR__.'/admin/admin.php';
+// admin/admin.php routes include in bootstrap/app.php 
 
 
 
