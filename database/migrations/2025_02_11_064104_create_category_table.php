@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->string('image')->nullable();
+            $table->string('thumbnail')->nullable(); 
             $table->text('content')->nullable();
             $table->boolean('status')->default(1);
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
             $table->timestamps();
 
             // Foreign key to ensure referential integrity

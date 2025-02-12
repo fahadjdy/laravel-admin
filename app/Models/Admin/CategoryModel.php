@@ -33,4 +33,9 @@ class CategoryModel extends Model
     {
         return $this->hasMany(CategoryModel::class, 'parent_id');
     }
+
+    public function images()
+    {
+        return $this->hasMany(CategoryImageModel::class, 'category_id');
+    }
 }
