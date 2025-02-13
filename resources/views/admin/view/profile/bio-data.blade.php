@@ -1,60 +1,60 @@
-                <div class="row">
-                        <form action="" method="post" id="bioDataForm">
-                            @csrf
-                            @method('put')
-                            <table class="table table-striped bio-data-table">
-                                <tbody>
-                                    <tr>
-                                        <td width="10%" class="text-primary bio-data-label" >Name :</td>
-                                        <td>
-                                            <span id="name-text" class="text-muted">Altron</span>
-                                            <input type="text" id="name" name="name" class="form-control d-none " value="Altron">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="10%" class="text-primary bio-data-label" >Slogan :</td>
-                                        <td>
-                                            <span id="slogan-text" class="text-muted">We deliver the quality</span>
-                                            <input type="text" id="slogan" name="slogan" class="form-control d-none " value="We deliver the quality">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="10%" class="text-primary bio-data-label" >Email :</td>
-                                        <td>
-                                            <span id="email-text" class="text-muted">fahadjdy@gmail.com</span>
-                                            <input type="email" id="email" name="email" class="form-control d-none " value="fahadjdy@gmail.com">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="10%" class="text-primary bio-data-label" >Contact :</td>
-                                        <td>
-                                            <span id="contact-text" class="text-muted">9054479848</span>
-                                            <input type="number" id="contact" name="contact" class="form-control d-none " value="9054479848">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="10%" class="text-primary bio-data-label" >Address :</td>
-                                        <td>
-                                            <span id="address-text" class="text-muted">basu</span>
-                                            <input type="text" id="address" name="address" class="form-control d-none " value="basu">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="10%" class="text-primary bio-data-label" >Fevicon :</td>
-                                        <td>
-                                            <div class="position-relative">
-                                                <img src="{{ asset('author/fhd-favicon.png') }}" width="50px" height="50px" id="favicon-img" >
-                                                <div class="favicon-img-overlay position-absolute ">
-                                                    <div class="circle">
-                                                        <i class="fa-duotone fa-solid fa-camera" id="favicon-icon"></i>
-                                                        <input type="file" class="d-none" id="favicon-file" name="favicon" accept="image/*">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>        
-                        </form>
+<div class="">
+    <form action="" method="post" id="bioDataForm" class="">
+        @csrf
+        @method('put')
+        <div class="form-container rounded">
+            
+            <div class="row my-2">
+                <!-- First Name & Slogan fields in the same row -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name" class="text-primary">Name :</label>
+                        <input type="text" id="name" name="name" class="form-control" value="Altron">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="slogan" class="text-primary">Slogan :</label>
+                        <input type="text" id="slogan" name="slogan" class="form-control" value="We deliver the quality">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row my-2">
+                <!-- Email and Contact fields in the same row -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="email" class="text-primary">Email :</label>
+                        <input type="email" id="email" name="email" class="form-control" value="fahadjdy@gmail.com">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="contact" class="text-primary">Contact :</label>
+                        <input type="number" id="contact" name="contact" class="form-control" value="9054479848">
+                    </div>
+                </div>
+            </div>
 
-                </div>                                                                                                              
+            <div class="row my-2">
+                <!-- Address field with CKEditor -->
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="address" class="text-primary">Address :</label>
+                        <textarea id="address" name="address" class="form-control" rows="6">basu</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save button -->
+            <div class="row mt-3 justify-content-center">
+                <div class="col-md-12 text-center">
+                    <button class="btn btn-primary save-btn" id="save-btn">
+                        Save <i class="fa-duotone fa-solid fa-floppy-disk"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

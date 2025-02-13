@@ -241,3 +241,9 @@ main{
 }
 
 /* datatable css [End] */
+
+
+/* CKEEditor  */
+.ck-editor__editable  {
+    height: 250px !important; 
+}
