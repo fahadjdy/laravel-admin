@@ -56,22 +56,4 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="{{asset('admin/css/pages/profile.css')}}">
     <script src="{{asset('admin/js/pages/profile.js')}}"></script>
-
-    <!-- Include CKEditor CDN -->
-
-    <!-- Initialize CKEditor -->
-    <script>
-       
-    </script>
 @endsection
-
-<!--
-Logo
-Company Name
-Company Slogan
-About us / Image
-Contact multiple
-Email
-Feature management >> is Watermark
-Change Password
--->
