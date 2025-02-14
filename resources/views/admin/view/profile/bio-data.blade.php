@@ -9,7 +9,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="name" class="text-primary">Name :</label>
-                        <input type="text" id="name" name="name" class="form-control" value="Altron">
+                        <input type="text" id="name" name="name" class="form-control" value="">
                     </div>
                 </div>
                 <div class="col-md-6">

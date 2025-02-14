@@ -91,11 +91,8 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ url('/admin/category/image/delete') }}/" + imageId,
+                    url: location.origin + "/admin/category/image/delete/" + imageId,
                     type: "DELETE",
-                    data: {
-                        _token: "{{ csrf_token() }}"
-                    },
                     success: function (response) {
                         Swal.fire(
                             'Deleted!',
@@ -146,7 +143,7 @@ $(document).ready(function () {
                         let redirectUrl = typeof pre !== 'undefined' ? pre : location.origin + '/admin/category';
                         window.location.href = redirectUrl;
                     }else{
-                        window.location.href =  location.origin + '/admin/category';
+                        window.location.reload();
                     }
                 });
                 

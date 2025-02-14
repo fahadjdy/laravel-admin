@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Admin;
 use App\Http\Controllers\Admin\Category;
 use App\Http\Middleware\Admin\AdminAuth;
+use App\Http\Controllers\Admin\SocialMedia;
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/login', [Admin::class, 'login']);
@@ -16,6 +17,12 @@ Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function
     Route::get('/dashboard', [Admin::class, 'dashboard']);
 
     Route::get('/profile', [Admin::class, 'profile']);
+
+    // Social Media
+    Route::get('/profile/social-media/getAjaxSocialMedia', [SocialMedia::class, 'getAjaxSocialMedia']);
+    Route::post('/profile/social-media/store', [SocialMedia::class, 'store']);
+    Route::post('/profile/social-media/update/{id}', [SocialMedia::class, 'update']);
+    Route::delete('/profile/social-media/delete/{id}', [SocialMedia::class, 'destroy']);
 
     Route::get('/category', [Admin::class, 'category']);
     Route::post('/category/getAjaxCategory', [Category::class, 'getAjaxCategory']);
@@ -35,3 +42,7 @@ Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function
 });
 
  
+
+
+
+
