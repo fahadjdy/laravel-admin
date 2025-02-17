@@ -49,35 +49,29 @@ class Category extends Controller
             $draw = $request->input('draw');
             $start = $request->input('start');  // Offset
             $length = $request->input('length'); // Number of records to fetch
-            $searchValue = $request->input('search')['value'] ?? '';
+            $searchValue = trim($request->input('search')['value']) ?? '';
 
-            // Query top-level categories with children loaded
-            $query = CategoryModel::with('children', 'parent')->whereNull('parent_id');
+            $query = CategoryModel::with('children', 'parent');
 
             if (!empty($searchValue)) {
                 $query->where('name', 'LIKE', "%{$searchValue}%");
             }
-
-            // Count total top-level records (for simplicity)
+            
             $totalRecords = CategoryModel::whereNull('parent_id')->count();
-
-            // Get all top-level categories (ignoring pagination for the flattening)
+            
             $topCategories = $query->get();
             $flatCategories = $this->flattenCategories($topCategories);
             $flatCategories = collect($flatCategories)->values();
             $filteredRecords = $flatCategories->count();
 
-            // Apply pagination manually to the flattened collection
             $paginatedData = $flatCategories->slice($start, $length)->values();
 
-            // Format data for DataTables
             $formattedCategories = $paginatedData->map(function ($category) {
-                // Create indentation using non-breaking spaces
+
                 $indent = str_repeat('&nbsp;&nbsp;&nbsp;', $category->level);
                 return [
                     'id' => $category->id,
                     'name' => $indent . $category->name,
-                    // For child categories, display parent's name; for top-level, 'None'
                     'parent_name' => $category->level > 0 ? optional($category->parent)->name : 'None',
                     'status' => $category->status,
                     'image' => $category->thumbnail, // or however you store your image path
