@@ -159,6 +159,7 @@ class Category extends Controller
     
         // Save category details
         $category->name = $request->name;
+        $category->slug =  createSlug($request->name);
         $category->status = $request->status;
         $category->parent_id = $request->parent_category ?? null;
         $category->content = $request->content;
