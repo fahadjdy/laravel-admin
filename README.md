@@ -1,5 +1,5 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 # Laravel Database Setup
 
@@ -13,27 +13,35 @@ Migrations are used to create the database tables for your application. To run t
 
 ```bash
 php artisan migrate
-php artisan db:seed 
-,
+```
 
-OR 
+### 2. Seed the Database
+
+After running the migrations, you can seed the database with default values using:
+
+```bash
+php artisan db:seed
+```
+
+Alternatively, you can run both the migration and seeding in one command:
 
 ```bash
 php artisan migrate --seed
-,
-
+```
 
 ## Constants
- This is use for allowing to display or not purpose
- - isCopyright ( must have id "copyright" at footer tag)
+
+These constants are used to control visibility and other options:
+
+- `isCopyright` (must have id `copyright` in the footer tag)
 
 ## About Admin Panel
 
-This is customized admin panel which will help to use in every dynamic project :
+This is a customized admin panel that can be used in every dynamic project. It includes features to:
 
 - Manage Profile
-- Manage sudo admin
-- Manage user 
-- Manage Roles 
-- Manage Rights 
-- Manage Menu
+- Manage Super Admin (sudo admin)
+- Manage Users
+- Manage Roles
+- Manage Rights
+- Manage Menus
