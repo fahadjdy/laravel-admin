@@ -8,7 +8,7 @@
        <a href="{{url('/admin/category/add')}}"> <x-button type="primary" > Add Category </x-button></a>
     </div>
    
-    <table class="table table-striped table-hover w-100 my-2" id="tbl">
+    <table class="table table-striped table-hover w-100 my-2" id="category-table">
         <thead>
             <tr>
                 <th scope="col" width="5%">#</th>

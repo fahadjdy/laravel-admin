@@ -46,28 +46,34 @@ class Category extends Controller
     public function getAjaxCategory(Request $request)
     {
         if ($request->ajax()) {
-            // Get parameters from DataTables request
+            
             $draw = $request->input('draw');
-            $start = $request->input('start');  // Offset
-            $length = $request->input('length'); // Number of records to fetch
-            $searchValue = $request->input('search')['value']; // Search value
-
-            // Query categories with pagination and optional search
+            $start = $request->input('start');  
+            $length = $request->input('length');
+            $searchValue = $request->input('search')['value']; 
+    
             $query = CategoryModel::with('parent');
-
-            // Apply search filter
+    
             if (!empty($searchValue)) {
                 $query->where('name', 'LIKE', "%{$searchValue}%");
             }
-
-            // Get total records count before filtering
+    
+            $order = $request->input('order')[0]; 
+            $orderColumnIndex = $order['column'];
+            $orderDir = $order['dir'];
+    
+            $columns = $request->input('columns');
+            $orderColumnName = isset($columns[$orderColumnIndex]['data']) && $columns[$orderColumnIndex]['data']
+                ? $columns[$orderColumnIndex]['data']
+                : 'id';
+    
+            $query->orderBy($orderColumnName, $orderDir);
+    
             $totalRecords = CategoryModel::count();
             $filteredRecords = $query->count();
-
-            // Apply pagination
+    
             $categories = $query->skip($start)->take($length)->get();
-
-            // Format data
+    
             $formattedCategories = $categories->map(function ($category) {
                 return [
                     'id' => $category->id,
@@ -76,11 +82,10 @@ class Category extends Controller
                     'status' => $category->status,
                     'image' => $category->thumbnail,
                     'actions' => '<a href="/admin/category/edit/' . $category->id . '" class="btn btn-sm btn-primary">Edit</a> 
-                                <button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>'
+                                  <button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>'
                 ];
             });
-
-            // Return JSON response
+    
             return response()->json([
                 "draw" => intval($draw),
                 "recordsTotal" => $totalRecords,
@@ -88,7 +93,8 @@ class Category extends Controller
                 'data' => $formattedCategories
             ]);
         }
-    }   
+    }
+    
 
     public function deleteCategoryImage($id)
     {
