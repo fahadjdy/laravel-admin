@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Admin\AdminModel;
 
 class Admin extends Controller
 {
@@ -92,45 +93,42 @@ class Admin extends Controller
     }
     public function profile()
     {
-        $data['profile'] = [
-            'logo' => 'logo.jpg',
-            'favicon' => 'logo.jpg',
-            'name' => 'Name',
-            'slogan' => 'slogan',
-            'email' => 'email',
-            'about_content' => 'about_content',
-            'about_image' => 'about_image',
-            'watermark_images' => 'watermark_images',
-            'feature_x' => '',
-        ];        
-
-        return view('admin.profile',$data);
+        $profile = AdminModel::find(1);
+        return view('admin.profile',compact('profile'));
     }
+
+    public function saveBioData(Request $request)
+    {
+        // Validate Data
+        $request->validate([
+            'bio-name' => 'required|string|max:255',
+            'bio-email-1' => 'required|email',
+            'bio-contact-1' => 'required|numeric',
+            'bio-address-1' => 'required|string',
+        ]);
+        
+        // Save or update profile
+        $profile = AdminModel::updateOrCreate(
+            ['id'    => $request->input('bio-id')  ],
+            [
+                
+                'name' => $request->input('bio-name'),
+                'slogan' => $request->input('bio-slogan'),
+                'email_1' => $request->input('bio-email-1'),
+                'email_2' => $request->input('bio-email-2'),
+                'contact_1' => $request->input('bio-contact-1'),
+                'contact_2' => $request->input('bio-contact-2'),
+                'address_1' => $request->input('bio-address-1'),
+                'address_2' => $request->input('bio-address-2'),
+            ]
+        );
+
+        return response()->json(['success' => true, 'message' => 'Profile updated successfully!']);
+    }
+
     public function category()
     {
         return view('admin.category');
-    }
-
-    public function tableData()
-    {
-        $canEdit = true; 
-        $canDelete = true; 
-
-        $data = [
-            ['title' => 'Sample Title 1', 'description' => 'Sample Description 1', 'actions' => ($canEdit ? ' <a href="'.url('/admin/category/edit/1').'"><i class="fa fa-pen  btn-primary p-2 mx-1"></i></a>' : '') . ($canDelete ? '<i class="fa fa-trash  btn-danger p-2 mx-1"></i>' : '')],
-            ['title' => 'Sample Title 2', 'description' => 'Sample Description 2', 'actions' => ($canEdit ? '<i class="fa fa-pen  btn-primary p-2 mx-1"></i>' : '') . ($canDelete ? '<i class="fa fa-trash  btn-danger p-2 mx-1"></i>' : '')],
-            ['title' => 'Sample Title 3', 'description' => 'Sample Description 3', 'actions' => ($canEdit ? '<i class="fa fa-pen  btn-primary p-2 mx-1"></i>' : '') . ($canDelete ? '<i class="fa fa-trash  btn-danger p-2 mx-1"></i>' : '')],
-            ['title' => 'Sample Title 3', 'description' => 'Sample Description 3', 'actions' => ($canEdit ? '<i class="fa fa-pen  btn-primary p-2 mx-1"></i>' : '') . ($canDelete ? '<i class="fa fa-trash  btn-danger p-2 mx-1"></i>' : '')],
-            ['title' => 'Sample Title 3', 'description' => 'Sample Description 3', 'actions' => ($canEdit ? '<i class="fa fa-pen  btn-primary p-2 mx-1"></i>' : '') . ($canDelete ? '<i class="fa fa-trash  btn-danger p-2 mx-1"></i>' : '')],
-            ['title' => 'Sample Title 3', 'description' => 'Sample Description 3', 'actions' => ($canEdit ? '<i class="fa fa-pen  btn-primary p-2 mx-1"></i>' : '') . ($canDelete ? '<i class="fa fa-trash  btn-danger p-2 mx-1"></i>' : '')],
-            ['title' => 'Sample Title 3', 'description' => 'Sample Description 3', 'actions' => ($canEdit ? '<i class="fa fa-pen  btn-primary p-2 mx-1"></i>' : '') . ($canDelete ? '<i class="fa fa-trash  btn-danger p-2 mx-1"></i>' : '')],
-            ];
-
-        return response()->json([
-            'data' => $data,
-            'recordsTotal' => count($data),
-            'recordsFiltered' => count($data),
-        ]);
     }
     
 }

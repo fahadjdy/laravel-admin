@@ -2,7 +2,6 @@
 
 @section('content')
 
-@php $profile = (object) $profile; @endphp
 
 <!-- breadcrumb  -->
     <x-breadcrumb page="Profile"></x-breadcrumb>
@@ -53,7 +52,11 @@
 @endsection
 
 @section('js')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
-    <link rel="stylesheet" href="{{asset('admin/css/pages/profile.css')}}">
     <script src="{{asset('admin/js/pages/profile.js')}}"></script>
+@endsection
+    
+@section('head')
+    <link rel="stylesheet" href="{{asset('admin/css/pages/profile.css')}}">
 @endsection
