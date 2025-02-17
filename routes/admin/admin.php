@@ -16,6 +16,8 @@ Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function
     Route::get('/dashboard', [Admin::class, 'dashboard']);
 
     Route::get('/profile', [Admin::class, 'profile']);
+    Route::post('/profile/logo/save', [Admin::class, 'saveProfileLogo'])->name('admin.profile.logo.save');
+
     Route::post('/profile/bio-data/save', [Admin::class, 'saveBioData'])->name('profile.save');
 
     // Social Media

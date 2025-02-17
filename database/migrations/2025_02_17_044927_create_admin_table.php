@@ -22,6 +22,14 @@ return new class extends Migration
             $table->text('address_1'); // Primary address
             $table->text('address_2')->nullable(); // Secondary address (optional)
             $table->string('password'); // Password
+
+            // New fields
+            $table->string('logo')->nullable(); // Logo image path
+            $table->string('favicon')->nullable(); // Favicon image path
+            $table->string('watermark')->nullable(); // Watermark image path
+            $table->boolean('is_maintenance')->default(false); // Maintenance mode flag
+            $table->boolean('is_watermark')->default(false); // Watermarking flag
+
             $table->timestamps();
         });
     }

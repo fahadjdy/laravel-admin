@@ -43,7 +43,7 @@ $(document).ready(function () {
         
         if (confirm('Are you sure you want to delete this category?')) {
             $.ajax({
-                url: window.localtion.origin + '/admin/category/delete/' + categoryId,
+                url: window.location.origin + '/admin/category/delete/' + categoryId,
                 type: 'DELETE',
                 success: function(response) {
                     alert(response.success);
@@ -61,15 +61,17 @@ $(document).ready(function () {
 
     // ***** Category Add/Edit Page Js *****
 
-
     // category content CKEEditor 
-    ClassicEditor
+    if(typeof ClassicEditor !== 'undefined'){
+
+        ClassicEditor
         .create(document.querySelector('#content'), {
             height: 300  // Optional: Set the height for the editor
         })
         .catch(error => {
             console.error(error);
         });
+    }
 
 
     // Handle image delete

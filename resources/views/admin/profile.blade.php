@@ -10,7 +10,8 @@
         <div class="card my-3 p-3">
             <div class="d-flex align-items-center">
                 <div class="profile-img  position-relative">
-                    <img src="{{ asset('admin/img/auth/login-bg.jpg') }}" alt="profile" class="img-fluid rounded-circle" id="profile-img">
+                    <img src="{{ url($profile->logo) }}" alt="profile" class="img-fluid rounded-circle" id="profile-img">
+                    <!-- <img src="{{ asset('admin/img/auth/login-bg.jpg') }}" alt="profile" class="img-fluid rounded-circle" id="profile-img"> -->
                     <div class="profile-img-overlay position-absolute">
                         <div class="circle">
                             <i class="fa-duotone fa-solid fa-camera" id="profile-icon"></i>
@@ -20,8 +21,8 @@
                     </div>
                 </div>
                 <div class="profile-text ms-3 admin-name px-2">
-                    <h2><span> Altron </span></h2>
-                    <p>We deliver the quality</p>
+                    <h2><span> {{ $profile->name }} </span></h2>
+                    <p>{{ $profile->slogan }}</p>
                 </div>
             </div>
         </div>
@@ -54,9 +55,7 @@
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="{{asset('admin/css/pages/profile.css')}}">
     <script src="{{asset('admin/js/pages/profile.js')}}"></script>
 @endsection
     
-@section('head')
-    <link rel="stylesheet" href="{{asset('admin/css/pages/profile.css')}}">
-@endsection

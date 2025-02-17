@@ -21,6 +21,11 @@ class AdminModel extends Model
         'contact_2',
         'address_1',
         'address_2',
+        'logo',
+        'favicon',
+        'watermark',
+        'is_maintenance',
+        'is_watermark',
         'password',
     ];
 

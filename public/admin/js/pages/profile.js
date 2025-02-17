@@ -11,22 +11,57 @@ $(document).ready(function () {
 
 
 // ****** Profile Page Js [Start] ******
-
 let profileIcon = document.getElementById('profile-icon');
 let profileFile = document.getElementById('profile-file');
 let profileImg = document.getElementById('profile-img');
 
-profileIcon.addEventListener('click', function() {
+profileIcon.addEventListener('click', function () {
     profileFile.click();
 });
 
-profileFile.addEventListener('change', function() {
+profileFile.addEventListener('change', function () {
     if (this.files && this.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            profileImg.src = e.target.result;
+        let file = this.files[0];
+        let allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+
+        // Check if the selected file is a valid image type
+        if (!allowedTypes.includes(file.type)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid File Type!',
+                text: 'Please select a valid image file (JPEG, PNG, JPG, GIF).',
+            });
+            return; // Stop execution if invalid file type
         }
-        reader.readAsDataURL(this.files[0]);
+
+        var formData = new FormData();
+        formData.append('logo', file);
+
+        fetch('/admin/profile/logo/save', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                profileImg.src = data.image;
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Logo Updated!',
+                    text: 'Your profile logo has been updated successfully.',
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Upload Failed!',
+                    text: data.message,
+                });
+            }
+        })
+        .catch(error => console.error('Error:', error));
     }
 });
 
@@ -47,6 +82,9 @@ profileFile.addEventListener('change', function() {
     // Save Profile Data via AJAX
     $('#bio-save-btn').click(function(e) {
         e.preventDefault(); // Prevent default form submission
+
+        $('.admin-name span').text($('#bio-name').val());    
+        $('.admin-name p').text($('#bio-slogan').val());    
 
         let formData = $('#bioDataForm').serialize(); // Get form data
 

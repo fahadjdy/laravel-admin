@@ -33,44 +33,6 @@ class Admin extends Controller
         // return view('admin.profile', compact('profile'));
     }
 
-    public function update(Request $request)
-    {
-        // $request->validate([
-        //     'logo' => 'nullable|image',
-        //     'favicon' => 'nullable|image',
-        //     'name' => 'required|string|max:255',
-        //     'slogan' => 'nullable|string|max:255',
-        //     'email' => 'required|email|max:255',
-        //     'about_content' => 'nullable|string',
-        //     'about_image' => 'nullable|image',
-        // ]);
-
-        // $profile = Profile::firstOrCreate(['id' => 1]);
-
-        // // Update profile fields
-        // $profile->name = $request->name;
-        // $profile->slogan = $request->slogan;
-        // $profile->email = $request->email;
-        // $profile->about_content = $request->about_content;
-        // $profile->watermark_images = $request->has('watermark_images');
-        // $profile->feature_x = $request->has('feature_x');
-
-        // // Handle file uploads
-        // if ($request->hasFile('logo')) {
-        //     $profile->logo = $request->file('logo')->store('logos', 'public');
-        // }
-        // if ($request->hasFile('favicon')) {
-        //     $profile->favicon = $request->file('favicon')->store('favicons', 'public');
-        // }
-        // if ($request->hasFile('about_image')) {
-        //     $profile->about_image = $request->file('about_image')->store('about_images', 'public');
-        // }
-
-        // $profile->save();
-
-        // return redirect()->back()->with('success', 'Profile updated successfully!');
-    }
-
     public function changePassword(Request $request)
     {
         // $request->validate([
@@ -96,6 +58,45 @@ class Admin extends Controller
         $profile = AdminModel::find(1);
         return view('admin.profile',compact('profile'));
     }
+
+    public function saveProfileLogo(Request $request)
+    {
+        // Validate that an image file is uploaded
+        $request->validate([
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    
+        $admin = AdminModel::find(1); // Assuming admin ID is 1
+    
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('admin/img/profile');
+    
+            // Ensure the directory exists
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+    
+            // Check if an old profile image exists and delete it
+            if ($admin->logo && file_exists(public_path($admin->logo))) {
+                unlink(public_path($admin->logo));  // Remove the old image
+            }
+    
+            // Move the new file to the destination
+            $file->move($destinationPath, $filename);
+    
+            // Save the new image path in the database
+            $admin->logo = "admin/img/profile/" . $filename;
+            $admin->save();
+    
+            return response()->json(['success' => true, 'image' => asset("admin/img/profile/$filename")]);
+        }
+    
+        return response()->json(['success' => false, 'message' => 'Image upload failed!']);
+    }
+    
+    
 
     public function saveBioData(Request $request)
     {

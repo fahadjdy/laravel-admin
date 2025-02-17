@@ -124,15 +124,25 @@ if (!function_exists('uploadFile')) {
 
 if (!function_exists('createSlug')) {
     function createSlug($string) {
-        
+        // Convert to lowercase
         $slug = strtolower($string);
+        
+        // Replace spaces with dashes
         $slug = str_replace(' ', '-', $slug);
+        
+        // Remove non-alphanumeric characters except dashes
         $slug = preg_replace('/[^a-z0-9-]/', '', $slug);
+        
+        // Replace multiple consecutive dashes with a single dash
+        $slug = preg_replace('/-+/', '-', $slug);
+        
+        // Trim dashes from the beginning and end
         $slug = trim($slug, '-');
-
+        
         return $slug;
     }
 }
+
 
 if (!function_exists('p')) {
     function p($data) {
