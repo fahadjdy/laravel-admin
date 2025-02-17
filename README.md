@@ -13,13 +13,14 @@ Migrations are used to create the database tables for your application. To run t
 
 ```bash
 php artisan migrate
-php artisan db:seed
-
+php artisan db:seed 
+,
 
 OR 
 
+```bash
 php artisan migrate --seed
-
+,
 
 
 ## Constants
