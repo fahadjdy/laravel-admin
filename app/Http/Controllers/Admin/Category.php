@@ -51,9 +51,10 @@ class Category extends Controller
             $length = $request->input('length'); // Number of records to fetch
             $searchValue = trim($request->input('search')['value']) ?? '';
 
-            $query = CategoryModel::with('children', 'parent');
-
+            
+            $query = CategoryModel::with('children', 'parent')->whereNull('parent_id');
             if (!empty($searchValue)) {
+                $query = CategoryModel::with('children', 'parent');
                 $query->where('name', 'LIKE', "%{$searchValue}%");
             }
             
@@ -67,16 +68,17 @@ class Category extends Controller
             $paginatedData = $flatCategories->slice($start, $length)->values();
 
             $formattedCategories = $paginatedData->map(function ($category) {
-
-                $indent = str_repeat('&nbsp;&nbsp;&nbsp;', $category->level);
+                // Build the full category path recursively
+                $categoryPath = $this->getCategoryPath($category);
+            
                 return [
                     'id' => $category->id,
-                    'name' => $indent . $category->name,
-                    'parent_name' => $category->level > 0 ? optional($category->parent)->name : 'None',
+                    'name' => $categoryPath,  // This will contain the full hierarchy
+                    'parent_name' => ($category->parent) ? optional($category->parent)->name : 'None',
                     'status' => $category->status,
-                    'image' => $category->thumbnail, // or however you store your image path
+                    'image' => $category->thumbnail, 
                     'actions' => '<a href="/admin/category/edit/' . $category->id . '" class="btn btn-sm btn-primary">Edit</a> ' .
-                                '<button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>'
+                                 '<button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>'
                 ];
             });
 
@@ -89,6 +91,16 @@ class Category extends Controller
         }
     }
 
+    /**
+     * Recursive function to generate category path like "Category -> Subcategory -> Product"
+     */
+    private function getCategoryPath($category, $path = '')
+    {
+        if ($category->parent) {
+            $path = $this->getCategoryPath($category->parent, $path) . ' -> ';
+        }
+        return $path . $category->name;
+    }
 
     // This function recursively flattens the category tree.
     private function flattenCategories($categories, $level = 0)
