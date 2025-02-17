@@ -17,13 +17,18 @@ $(document).ready(function () {
         ajax: {
             url: location.origin + '/admin/category/getAjaxCategory',
             type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         },
         columns: [
             { data: null, render: function(data, type, row, meta) {
                 return meta.row + meta.settings._iDisplayStart + 1; 
             }},
-            { data: 'name' },
-            { data: 'parent_name', defaultContent: 'None' }, 
+            { data: 'name', render: function(data, type, row) {
+                return data;  // Contains HTML indentation
+            }},
+            { data: 'parent_name', defaultContent: 'None' },
             { data: 'status', render: function(data) {
                 return data ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
             }},
@@ -32,8 +37,11 @@ $(document).ready(function () {
             }, orderable: false },
             { data: 'actions', orderable: false, searchable: false }
         ],
-        responsive: true,
+        responsive: true
     });
+    
+    
+    
 
     $(document).on('click', '.delete-category', function() {
         let categoryId = $(this).data('id');

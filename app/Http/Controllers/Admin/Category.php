@@ -46,54 +46,72 @@ class Category extends Controller
     public function getAjaxCategory(Request $request)
     {
         if ($request->ajax()) {
-            
             $draw = $request->input('draw');
-            $start = $request->input('start');  
-            $length = $request->input('length');
-            $searchValue = $request->input('search')['value']; 
-    
-            $query = CategoryModel::with('parent');
-    
+            $start = $request->input('start');  // Offset
+            $length = $request->input('length'); // Number of records to fetch
+            $searchValue = $request->input('search')['value'] ?? '';
+
+            // Query top-level categories with children loaded
+            $query = CategoryModel::with('children', 'parent')->whereNull('parent_id');
+
             if (!empty($searchValue)) {
                 $query->where('name', 'LIKE', "%{$searchValue}%");
             }
-    
-            $order = $request->input('order')[0]; 
-            $orderColumnIndex = $order['column'];
-            $orderDir = $order['dir'];
-    
-            $columns = $request->input('columns');
-            $orderColumnName = isset($columns[$orderColumnIndex]['data']) && $columns[$orderColumnIndex]['data']
-                ? $columns[$orderColumnIndex]['data']
-                : 'id';
-    
-            $query->orderBy($orderColumnName, $orderDir);
-    
-            $totalRecords = CategoryModel::count();
-            $filteredRecords = $query->count();
-    
-            $categories = $query->skip($start)->take($length)->get();
-    
-            $formattedCategories = $categories->map(function ($category) {
+
+            // Count total top-level records (for simplicity)
+            $totalRecords = CategoryModel::whereNull('parent_id')->count();
+
+            // Get all top-level categories (ignoring pagination for the flattening)
+            $topCategories = $query->get();
+            $flatCategories = $this->flattenCategories($topCategories);
+            $flatCategories = collect($flatCategories)->values();
+            $filteredRecords = $flatCategories->count();
+
+            // Apply pagination manually to the flattened collection
+            $paginatedData = $flatCategories->slice($start, $length)->values();
+
+            // Format data for DataTables
+            $formattedCategories = $paginatedData->map(function ($category) {
+                // Create indentation using non-breaking spaces
+                $indent = str_repeat('&nbsp;&nbsp;&nbsp;', $category->level);
                 return [
                     'id' => $category->id,
-                    'name' => $category->name,
-                    'parent_name' => optional($category->parent)->name ?? 'None',
+                    'name' => $indent . $category->name,
+                    // For child categories, display parent's name; for top-level, 'None'
+                    'parent_name' => $category->level > 0 ? optional($category->parent)->name : 'None',
                     'status' => $category->status,
-                    'image' => $category->thumbnail,
-                    'actions' => '<a href="/admin/category/edit/' . $category->id . '" class="btn btn-sm btn-primary">Edit</a> 
-                                  <button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>'
+                    'image' => $category->thumbnail, // or however you store your image path
+                    'actions' => '<a href="/admin/category/edit/' . $category->id . '" class="btn btn-sm btn-primary">Edit</a> ' .
+                                '<button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>'
                 ];
             });
-    
+
             return response()->json([
                 "draw" => intval($draw),
                 "recordsTotal" => $totalRecords,
                 "recordsFiltered" => $filteredRecords,
-                'data' => $formattedCategories
+                "data" => $formattedCategories
             ]);
         }
     }
+
+
+    // This function recursively flattens the category tree.
+    private function flattenCategories($categories, $level = 0)
+    {
+        $flat = [];
+        foreach ($categories as $category) {
+            $category->level = $level;
+            $flat[] = $category;
+            
+            if ($category->children && $category->children->count() > 0) {
+                $flat = array_merge($flat, $this->flattenCategories($category->children, $level + 1));
+            }
+        }
+        return $flat;
+    }
+    
+
     
 
     public function deleteCategoryImage($id)
