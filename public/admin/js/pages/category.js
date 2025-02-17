@@ -11,15 +11,12 @@ $(document).ready(function () {
 
     // ****** Category Page Js *****
 
-    $('#tbl').DataTable({
+    $('#category-table').DataTable({
         serverSide: true,
         processing: true,
         ajax: {
             url: location.origin + '/admin/category/getAjaxCategory',
             type: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
-            }
         },
         columns: [
             { data: null, render: function(data, type, row, meta) {
@@ -48,7 +45,7 @@ $(document).ready(function () {
                 success: function(response) {
                     alert(response.success);
                     $('#categoryTable').DataTable().ajax.reload(); 
-                    $('#tbl').DataTable().row($(this).parents('tr')).remove().draw();
+                    $('#category-table').DataTable().row($(this).parents('tr')).remove().draw();
                 },
                 error: function(xhr) {
                     alert('Error deleting category. Please try again.');
