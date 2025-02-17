@@ -9,7 +9,6 @@ use App\Http\Controllers\Admin\SocialMedia;
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/login', [Admin::class, 'login']);
-    Route::post('/table-data', [Admin::class, 'tableData']);
     Route::post('/checkLogin', [Admin::class, 'checkLogin']);
 });
 
@@ -17,6 +16,7 @@ Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function
     Route::get('/dashboard', [Admin::class, 'dashboard']);
 
     Route::get('/profile', [Admin::class, 'profile']);
+    Route::post('/profile/bio-data/save', [Admin::class, 'saveBioData'])->name('profile.save');
 
     // Social Media
     Route::get('/profile/social-media/getAjaxSocialMedia', [SocialMedia::class, 'getAjaxSocialMedia']);

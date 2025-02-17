@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('admin', function (Blueprint $table) {
+            $table->id();
+            $table->string('name'); // Admin Name
+            $table->string('slogan')->nullable(); // Optional slogan
+            $table->string('email_1')->unique(); // Primary email
+            $table->string('email_2')->nullable()->unique(); // Secondary email (optional)
+            $table->string('contact_1'); // Primary contact number
+            $table->string('contact_2')->nullable(); // Secondary contact (optional)
+            $table->text('address_1'); // Primary address
+            $table->text('address_2')->nullable(); // Secondary address (optional)
+            $table->string('password'); // Password
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('admin');
+    }
+};
