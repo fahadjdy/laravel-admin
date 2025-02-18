@@ -91,7 +91,7 @@ class Category extends Controller
                         ? '<span class="badge bg-success">Active</span>'
                         : '<span class="badge bg-danger">Inactive</span>',
                     'image' => $category->thumbnail
-                        ? '<img src="' . asset($category->thumbnail) . '" width="50" height="50">'
+                        ? $category->thumbnail
                         : '',
                     'actions' => '<a href="/admin/category/edit/' . $category->id . '" class="btn btn-sm btn-primary">Edit</a> ' .
                                 '<button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>'
