@@ -34,14 +34,14 @@
   border-radius: 18px;
 }
 
-.favicon-img-overlay{
+.favicon-img-overlay,.watermark-img-overlay{
   top: 0px;
   left:53px;
   box-shadow: 0 0 0 1px rgba(0,0,0,.1);
   border-radius: 18px;
 }
 
-.profile-img-overlay,.favicon-img-overlay .circle{
+.profile-img-overlay,.favicon-img-overlay,.watermark-img-overlay .circle{
   background-color: #fff !important;
   padding: 5px;
   border-radius: 18px;
