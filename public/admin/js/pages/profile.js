@@ -37,10 +37,10 @@ profileFile.addEventListener('change', function () {
         var formData = new FormData();
         formData.append('logo', file);
 
-        fetch('/admin/profile/logo/save', {
+        fetch(location.origin + '/admin/profile/logo/save', {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             body: formData
         })
@@ -127,20 +127,139 @@ profileFile.addEventListener('change', function () {
     let faviconIcon = document.getElementById('favicon-icon');
     let faviconFile = document.getElementById('favicon-file');
     let faviconImg = document.getElementById('favicon-img');
-    faviconIcon.addEventListener('click', function() {
+
+    faviconIcon.addEventListener('click', function () {
         faviconFile.click();
     });
 
-    faviconFile.addEventListener('change', function() {
+    faviconFile.addEventListener('change', function () {
         if (this.files && this.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                faviconImg.src = e.target.result;
+            let file = this.files[0];
+            let allowedTypes = ['image/x-icon', 'image/png', 'image/svg+xml'];
+
+            // Check if the selected file is a valid favicon type
+            if (!allowedTypes.includes(file.type)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid File Type!',
+                    text: 'Please select a valid favicon file (ICO, PNG, SVG).',
+                });
+                return;
             }
-            reader.readAsDataURL(this.files[0]);
+
+            var formData = new FormData();
+            formData.append('favicon', file);
+
+            fetch(location.origin + '/admin/profile/site-detail/favicon/save', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    faviconImg.src = data.image;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Favicon Updated!',
+                        text: 'Your favicon has been updated successfully.',
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Upload Failed!',
+                        text: data.message,
+                    });
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
     });
 
+    //  ******* Watermark  Code *******
+    let watermarkIcon = document.getElementById('watermark-icon');
+    let watermarkFile = document.getElementById('watermark-file');
+    let watermarkImg = document.getElementById('watermark-img');
+
+    watermarkIcon.addEventListener('click', function () {
+        watermarkFile.click();
+    });
+
+    watermarkFile.addEventListener('change', function () {
+        if (this.files && this.files[0]) {
+            let file = this.files[0];
+            let allowedTypes = ['image/png', 'image/svg+xml'];
+
+            if (!allowedTypes.includes(file.type)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid File Type!',
+                    text: 'Please select a valid watermark file (PNG, SVG).',
+                });
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('watermark', file);
+
+            fetch(location.origin + '/admin/profile/site-detail/watermark/save', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    watermarkImg.src = data.image;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Watermark Updated!',
+                        text: 'Your watermark has been updated successfully.',
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Upload Failed!',
+                        text: data.message,
+                    });
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+
+    $('#siteDetailsForm').on('submit', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var url = form.attr('action');
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: form.serialize(),
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Site Details updated successfully!",
+                    icon: "success"
+                });
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "There was an error updating the site Details.",
+                    icon: "error"
+                });
+            }
+        });
+    });
+    
 // ****** Site Detail Js [End] ******
 
 

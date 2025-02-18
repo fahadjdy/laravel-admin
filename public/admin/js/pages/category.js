@@ -17,23 +17,19 @@ $(document).ready(function () {
         ajax: {
             url: location.origin + '/admin/category/getAjaxCategory',
             type: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
         },
+        order: [[0, 'desc']], // Default sorting by ID in DESC order
         columns: [
             { data: null, render: function(data, type, row, meta) {
                 return meta.row + meta.settings._iDisplayStart + 1; 
             }},
-            { data: 'name', render: function(data, type, row) {
-                return data;  // Contains HTML indentation
-            }},
-            { data: 'parent_name', defaultContent: 'None' },
+            { data: 'name', orderable: true, searchable: true }, // Category Name (sortable)
+            { data: 'parent_name', orderable: true, searchable: true }, // Parent Category (sortable)
             { data: 'status', render: function(data) {
                 return data ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
             }},
             { data: 'image', render: function(data) {
-                return data ? `<img src="${location.origin}/${data}" width="50" height="50">` : 'No Image';
+                return data ? `<img src="${location.origin}/${data}" width="50" height="50">` : 'N/A';
             }, orderable: false },
             { data: 'actions', orderable: false, searchable: false }
         ],

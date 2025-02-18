@@ -15,16 +15,24 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function () {
     Route::get('/dashboard', [Admin::class, 'dashboard']);
 
+    // Profile 
     Route::get('/profile', [Admin::class, 'profile']);
-    Route::post('/profile/logo/save', [Admin::class, 'saveProfileLogo'])->name('admin.profile.logo.save');
+    Route::post('/profile/logo/save', [Admin::class, 'saveProfileLogo'])->name('admin.profile.logo.save'); // logo update
+   
+   // Profile - Site Detail
+    Route::post('/profile/site-detail/favicon/save', [Admin::class, 'saveFavicon'])->name('admin.profile.favicon.save'); // logo update
+    Route::post('/profile/site-detail/watermark/save', [Admin::class, 'saveWatermark'])->name('admin.profile.watermark.save'); // logo update
+    Route::post('/profile/site-detail/{id}', [Admin::class, 'saveSiteDetails'])->name('profile.site.detail.update');
 
+    // Profile - Bio Data
     Route::post('/profile/bio-data/save', [Admin::class, 'saveBioData'])->name('profile.save');
 
-    // Social Media
+    // Profile - Social Media
     Route::get('/profile/social-media/getAjaxSocialMedia', [SocialMedia::class, 'getAjaxSocialMedia']);
     Route::post('/profile/social-media/store', [SocialMedia::class, 'store']);
     Route::post('/profile/social-media/update/{id}', [SocialMedia::class, 'update']);
     Route::delete('/profile/social-media/delete/{id}', [SocialMedia::class, 'destroy']);
+    
 
     Route::get('/category', [Admin::class, 'category']);
     Route::post('/category/getAjaxCategory', [Category::class, 'getAjaxCategory']);
