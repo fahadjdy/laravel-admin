@@ -51,34 +51,50 @@ class Category extends Controller
             $length = $request->input('length'); // Number of records to fetch
             $searchValue = trim($request->input('search')['value']) ?? '';
 
-            
-            $query = CategoryModel::with('children', 'parent')->whereNull('parent_id');
+            // Get order column index and order direction
+            $orderColumnIndex = $request->input('order')[0]['column'] ?? 0;
+            $orderDir = $request->input('order')[0]['dir'] ?? 'desc';
+
+            // Define sortable columns mapping
+            $columns = ['id', 'name', 'parent_id']; // Matches table columns
+            $sortColumn = $columns[$orderColumnIndex] ?? 'id'; // Default to 'id'
+
+            // Base query with search filter
+            $query = CategoryModel::with('parent'); // Only top-level categories
+
             if (!empty($searchValue)) {
-                $query = CategoryModel::with('children', 'parent');
                 $query->where('name', 'LIKE', "%{$searchValue}%");
             }
-            
-            $totalRecords = CategoryModel::whereNull('parent_id')->count();
-            
-            $topCategories = $query->get();
-            $flatCategories = $this->flattenCategories($topCategories);
-            $flatCategories = collect($flatCategories)->values();
-            $filteredRecords = $flatCategories->count();
 
-            $paginatedData = $flatCategories->slice($start, $length)->values();
+            // Get total records (before filtering)
+            $totalRecords = CategoryModel::count();
 
-            $formattedCategories = $paginatedData->map(function ($category) {
-                // Build the full category path recursively
-                $categoryPath = $this->getCategoryPath($category);
-            
+            // Get filtered records count
+            $filteredRecords = $query->count();
+
+            // Apply sorting and pagination at the query level
+            $topCategories = $query->orderBy($sortColumn, $orderDir)
+                ->offset($start)
+                ->limit($length)
+                ->get();
+
+            // Ensure unique and properly formatted data
+            $flatCategories = collect($this->flattenCategories($topCategories))->unique('id')->values();
+
+            // Format data for DataTable
+            $formattedCategories = $flatCategories->map(function ($category) {
                 return [
                     'id' => $category->id,
-                    'name' => $categoryPath,  // This will contain the full hierarchy
-                    'parent_name' => ($category->parent) ? optional($category->parent)->name : 'None',
-                    'status' => $category->status,
-                    'image' => $category->thumbnail, 
+                    'name' => $category->name,
+                    'parent_name' => optional($category->parent)->name ?? 'None',
+                    'status' => $category->status
+                        ? '<span class="badge bg-success">Active</span>'
+                        : '<span class="badge bg-danger">Inactive</span>',
+                    'image' => $category->thumbnail
+                        ? '<img src="' . asset($category->thumbnail) . '" width="50" height="50">'
+                        : '',
                     'actions' => '<a href="/admin/category/edit/' . $category->id . '" class="btn btn-sm btn-primary">Edit</a> ' .
-                                 '<button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>'
+                                '<button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>'
                 ];
             });
 
@@ -92,31 +108,24 @@ class Category extends Controller
     }
 
     /**
-     * Recursive function to generate category path like "Category -> Subcategory -> Product"
+     * Flatten category tree properly without duplicates.
      */
-    private function getCategoryPath($category, $path = '')
+    private function flattenCategories($categories, $level = 0, &$flat = [])
     {
-        if ($category->parent) {
-            $path = $this->getCategoryPath($category->parent, $path) . ' -> ';
-        }
-        return $path . $category->name;
-    }
-
-    // This function recursively flattens the category tree.
-    private function flattenCategories($categories, $level = 0)
-    {
-        $flat = [];
         foreach ($categories as $category) {
-            $category->level = $level;
-            $flat[] = $category;
-            
+            if (!isset($flat[$category->id])) {
+                $category->level = $level;
+                $flat[$category->id] = $category;
+            }
+
             if ($category->children && $category->children->count() > 0) {
-                $flat = array_merge($flat, $this->flattenCategories($category->children, $level + 1));
+                $this->flattenCategories($category->children, $level + 1, $flat);
             }
         }
-        return $flat;
+
+        return array_values($flat);
     }
-    
+
 
     
 
