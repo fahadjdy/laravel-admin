@@ -9,7 +9,7 @@ if (profileImage) {
 }
 
 
-// sidebar menu collaps menu toggle js
+// sidebar menu collaps Gallery menu toggle js
 document.querySelectorAll('.toggle-gallery').forEach(function (toggle) {
     toggle.addEventListener('click', function () {
         const submenu = this.nextElementSibling;
@@ -25,3 +25,29 @@ document.querySelectorAll('.toggle-gallery').forEach(function (toggle) {
         }
     });
 });
+
+
+document.querySelector('.toggle-btn').addEventListener('click', function () {
+    document.querySelectorAll('.toggle-btn').forEach(function(el) {
+        el.classList.add('d-none');
+    });
+    document.querySelectorAll('.close-btn').forEach(function(el) {
+        el.classList.remove('d-none');
+    });
+    const aside = document.querySelector('aside');
+    aside.style.transform = 'translateX(0%)';
+    aside.style.transition = 'all 0.4s ease';
+});
+  
+document.querySelector('.close-btn').addEventListener('click', function () {
+    document.querySelectorAll('.toggle-btn').forEach(function(el) {
+        el.classList.remove('d-none');
+    });
+    document.querySelectorAll('.close-btn').forEach(function(el) {
+        el.classList.add('d-none');
+    });
+    const aside = document.querySelector('aside');
+    aside.style.transform = 'translateX(-100%)';
+    aside.style.transition = 'all 0.4s ease';
+});
+  
