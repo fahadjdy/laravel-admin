@@ -220,7 +220,7 @@ class Category extends Controller
 
                 // Apply watermark if enabled
                 if ($is_watermark && file_exists($watermark)) {
-                    applyWatermarkCore($imagePath, $watermark, $imagePath, 'center', 10, 10,75);
+                    applyWatermark($imagePath, $watermark, $imagePath, 'center', 10, 10,75);
                 }
 
                 // Save image path in category_images table
