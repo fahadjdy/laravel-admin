@@ -152,3 +152,135 @@ if (!function_exists('p')) {
     }
 }
 
+/**
+ * Applies a watermark to an image using core PHP (GD Library).
+ *
+ * @param string $sourcePath   Path to the source image.
+ * @param string $watermarkPath  Path to the watermark image.
+ * @param string $savePath     Path to save the watermarked image.
+ * @param string $position     Position of the watermark (e.g., 'bottom-right', 'top-left', 'center').
+ * @param int $xOffset         Horizontal offset (in pixels) from the position.
+ * @param int $yOffset         Vertical offset (in pixels) from the position.
+ *
+ * @return bool Returns true on success or false on failure.
+ */
+/**
+ * Applies a watermark to an image using the GD Library.
+ */
+/**
+ * Applies a watermark to an image using the GD Library with adjustable opacity.
+ *
+ * @param string $sourcePath   Path to the source image.
+ * @param string $watermarkPath  Path to the watermark image.
+ * @param string $savePath     Path to save the watermarked image.
+ * @param string $position     Position of the watermark (default 'bottom-right').
+ * @param int $xOffset         Horizontal offset (in pixels) from the position (default 10).
+ * @param int $yOffset         Vertical offset (in pixels) from the position (default 10).
+ * @param int $opacity         Opacity for the watermark (0-100, default 50).
+ *
+ * @return bool Returns true on success or false on failure.
+ */
+function applyWatermarkCore($sourcePath, $watermarkPath, $savePath, $position = 'bottom-right', $xOffset = 10, $yOffset = 10, $opacity = 75)
+{
+    // Get source image info and create image instance
+    $sourceInfo = getimagesize($sourcePath);
+    if (!$sourceInfo) return false;
+
+    $sourceMime = $sourceInfo['mime'];
+    switch ($sourceMime) {
+        case 'image/jpeg': 
+            $sourceImage = imagecreatefromjpeg($sourcePath); 
+            break;
+        case 'image/png': 
+            $sourceImage = imagecreatefrompng($sourcePath); 
+            break;
+        case 'image/gif': 
+            $sourceImage = imagecreatefromgif($sourcePath); 
+            break;
+        default: 
+            return false;
+    }
+
+    // Get watermark image info and create watermark instance
+    $watermarkInfo = getimagesize($watermarkPath);
+    if (!$watermarkInfo) return false;
+
+    switch ($watermarkInfo['mime']) {
+        case 'image/jpeg': 
+            $watermarkImage = imagecreatefromjpeg($watermarkPath); 
+            break;
+        case 'image/png': 
+            $watermarkImage = imagecreatefrompng($watermarkPath); 
+            break;
+        case 'image/gif': 
+            $watermarkImage = imagecreatefromgif($watermarkPath); 
+            break;
+        default: 
+            return false;
+    }
+
+    // Get dimensions for positioning
+    $sourceWidth = imagesx($sourceImage);
+    $sourceHeight = imagesy($sourceImage);
+    $watermarkWidth = imagesx($watermarkImage);
+    $watermarkHeight = imagesy($watermarkImage);
+
+    // Calculate destination coordinates based on desired position
+    switch ($position) {
+        case 'top-left': 
+            $destX = $xOffset; 
+            $destY = $yOffset; 
+            break;
+        case 'top-right': 
+            $destX = $sourceWidth - $watermarkWidth - $xOffset; 
+            $destY = $yOffset; 
+            break;
+        case 'bottom-left': 
+            $destX = $xOffset; 
+            $destY = $sourceHeight - $watermarkHeight - $yOffset; 
+            break;
+        case 'center': 
+            $destX = ($sourceWidth - $watermarkWidth) / 2; 
+            $destY = ($sourceHeight - $watermarkHeight) / 2; 
+            break;
+        case 'bottom-right':
+        default: 
+            $destX = $sourceWidth - $watermarkWidth - $xOffset; 
+            $destY = $sourceHeight - $watermarkHeight - $yOffset; 
+            break;
+    }
+
+    // Merge the watermark with the source image using imagecopymerge.
+    // Note: imagecopymerge() works best with truecolor images.
+    imagecopymerge(
+        $sourceImage,    // Destination image
+        $watermarkImage, // Source watermark image
+        $destX,          // Destination X
+        $destY,          // Destination Y
+        0,               // Source X
+        0,               // Source Y
+        $watermarkWidth, // Source width
+        $watermarkHeight,// Source height
+        $opacity         // Opacity percentage (0 = transparent, 100 = opaque)
+    );
+
+    // Save the image in the original format
+    $saved = false;
+    switch ($sourceMime) {
+        case 'image/jpeg': 
+            $saved = imagejpeg($sourceImage, $savePath, 90); 
+            break;
+        case 'image/png': 
+            $saved = imagepng($sourceImage, $savePath, 6); 
+            break;
+        case 'image/gif': 
+            $saved = imagegif($sourceImage, $savePath); 
+            break;
+    }
+
+    // Clean up
+    imagedestroy($sourceImage);
+    imagedestroy($watermarkImage);
+
+    return $saved;
+}

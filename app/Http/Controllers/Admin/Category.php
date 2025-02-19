@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\CategoryModel;
+use App\Models\Admin\AdminModel;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Admin\CategoryImageModel;
 
@@ -206,19 +207,28 @@ class Category extends Controller
     
         $firstImagePath = null;
     
+        // Save watermark settings
+        $is_watermark = AdminModel::value('is_watermark');
+        $watermark = (AdminModel::value('watermark')) ? public_path(AdminModel::value('watermark')) : '';
+
         // Handle multiple image uploads
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $image) {
                 $imageName = createSlug($request->name) . '_' . time() . rand(1000, 9999) . '.' . $image->getClientOriginalExtension();
-                $imagePath = 'admin/img/category/' . $imageName;
+                $imagePath = public_path('admin/img/category/' . $imageName);
                 $image->move(public_path('admin/img/category'), $imageName);
-    
+
+                // Apply watermark if enabled
+                if ($is_watermark && file_exists($watermark)) {
+                    applyWatermarkCore($imagePath, $watermark, $imagePath, 'center', 10, 10,75);
+                }
+
                 // Save image path in category_images table
                 $savedImage = CategoryImageModel::create([
                     'category_id' => $category->id,
-                    'image_path' => $imagePath
+                    'image_path' => 'admin/img/category/' . $imageName
                 ]);
-    
+
                 // Store the first uploaded image path for thumbnail (if not set)
                 if ($index === 0) {
                     $firstImagePath = $savedImage->image_path;
