@@ -247,3 +247,8 @@ main{
 .ck-editor__editable  {
     height: 250px !important; 
 }
+
+.form-check-input:checked {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
