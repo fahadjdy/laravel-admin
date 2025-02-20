@@ -2,10 +2,10 @@
     header .left-side span{
         display: unset;
     }
-    /* header .left-side h4 {
-      display: none;      
-    } */
-
+    main{
+      width: 100% !important;
+      padding: 30px !important;
+    }
     aside{
         position: fixed;
         transform: translateX(-100%);

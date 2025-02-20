@@ -130,7 +130,15 @@ a{
 
 /* Footer css [Start] */
 .author{
-    position: fixed; bottom: 20px; right: 20px;  padding: 10px; border-radius: 5px; z-index: 1000;font-size: 12px;
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+    z-index: 1000;
+    font-size: 12px;
+    background-color: #fff;
+    display: block;
+    width: 100%;
+    text-align: right;
 }
 /* Footer css [End] */
 
