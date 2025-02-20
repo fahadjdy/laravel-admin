@@ -1,0 +1,14 @@
+@media screen and (max-width: 1124px) {
+    header .left-side span{
+        display: unset;
+    }
+    /* header .left-side h4 {
+      display: none;      
+    } */
+
+    aside{
+        position: fixed;
+        transform: translateX(-100%);
+    }
+  }
+  

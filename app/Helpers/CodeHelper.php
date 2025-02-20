@@ -153,21 +153,6 @@ if (!function_exists('p')) {
 }
 
 /**
- * Applies a watermark to an image using core PHP (GD Library).
- *
- * @param string $sourcePath   Path to the source image.
- * @param string $watermarkPath  Path to the watermark image.
- * @param string $savePath     Path to save the watermarked image.
- * @param string $position     Position of the watermark (e.g., 'bottom-right', 'top-left', 'center').
- * @param int $xOffset         Horizontal offset (in pixels) from the position.
- * @param int $yOffset         Vertical offset (in pixels) from the position.
- *
- * @return bool Returns true on success or false on failure.
- */
-/**
- * Applies a watermark to an image using the GD Library.
- */
-/**
  * Applies a watermark to an image using the GD Library with adjustable opacity.
  *
  * @param string $sourcePath   Path to the source image.
@@ -180,7 +165,7 @@ if (!function_exists('p')) {
  *
  * @return bool Returns true on success or false on failure.
  */
-function applyWatermarkCore($sourcePath, $watermarkPath, $savePath, $position = 'bottom-right', $xOffset = 10, $yOffset = 10, $opacity = 75)
+function applyWatermark($sourcePath, $watermarkPath, $savePath, $position = 'bottom-right', $xOffset = 10, $yOffset = 10, $opacity = 75)
 {
     // Get source image info and create image instance
     $sourceInfo = getimagesize($sourcePath);
