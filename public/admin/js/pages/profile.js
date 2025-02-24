@@ -178,62 +178,7 @@ profileFile.addEventListener('change', function () {
         }
     });
 
-    //  ******* Watermark  Code *******
-    let watermarkIcon = document.getElementById('watermark-icon');
-    let watermarkFile = document.getElementById('watermark-file');
-    let watermarkImg = document.getElementById('watermark-img');
-
-    watermarkIcon.addEventListener('click', function () {
-        watermarkFile.click();
-    });
-
-    watermarkFile.addEventListener('change', function () {
-        if (this.files && this.files[0]) {
-            let file = this.files[0];
-            let allowedTypes = ['image/png', 'image/svg+xml'];
-
-            if (!allowedTypes.includes(file.type)) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Invalid File Type!',
-                    text: 'Please select a valid watermark file (PNG, SVG).',
-                });
-                return;
-            }
-
-            var formData = new FormData();
-            formData.append('watermark', file);
-
-            fetch(location.origin + '/admin/profile/site-detail/watermark/save', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    watermarkImg.src = data.image;
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Watermark Updated!',
-                        text: 'Your watermark has been updated successfully.',
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Upload Failed!',
-                        text: data.message,
-                    });
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-    });
-
-
-
+  
     // ******** About Image ********
     let aboutImgIcon = document.getElementById('about-img-icon');
     let aboutImgFile = document.getElementById('about-img-file');

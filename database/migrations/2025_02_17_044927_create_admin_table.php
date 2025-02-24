@@ -27,10 +27,9 @@ return new class extends Migration
             // New fields
             $table->string('logo')->nullable(); // Logo image path
             $table->string('favicon')->nullable(); // Favicon image path
-            $table->string('watermark')->nullable(); // Watermark image path
             $table->string('about_image')->nullable(); // About image path
-            $table->boolean('is_maintenance')->default(false); // Maintenance mode flag
-            $table->boolean('is_watermark')->default(false); // Watermarking flag
+            $table->boolean('is_maintenance')->default(false); // Maintenance mode flag 
+            $table->boolean('is_watermark')->default(false); // Watermarking flag (watermark will be as admin name or Company name)
 
             $table->timestamps();
         });

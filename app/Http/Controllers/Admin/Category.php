@@ -214,7 +214,7 @@ class Category extends Controller
     
         // Save watermark settings
         $is_watermark = AdminModel::value('is_watermark');
-        $watermark = (AdminModel::value('watermark')) ? public_path(AdminModel::value('watermark')) : '';
+        $watermark = (AdminModel::value('name')) ? AdminModel::value('name') : 'Fahad Jdy';
 
         // Handle multiple image uploads
         if ($request->hasFile('images')) {
@@ -224,8 +224,8 @@ class Category extends Controller
                 $image->move(public_path('admin/img/category'), $imageName);
 
                 // Apply watermark if enabled
-                if ($is_watermark && file_exists($watermark)) {
-                    applyTextWatermark($imagePath, $imagePath, "Stech Quality Parts", 15);
+                if ($is_watermark) {
+                    applyTextWatermark($imagePath, $imagePath,$watermark, 15);
                 }
 
                 // Save image path in category_images table

@@ -13,22 +13,10 @@
                     </div>
                 </div>
             </td>
-            <td width="10%" class="text-primary">Watermark :</td>
-            <td>
-                <div class="position-relative">
-                    <img data-src="{{ $profile->watermark ? url($profile->watermark) : '' }}" width="50px" height="50px" id="watermark-img" class="lazy">
-                    <div class="watermark-img-overlay position-absolute">
-                        <div class="circle">
-                            <i class="fa-duotone fa-solid fa-camera" id="watermark-icon"></i>
-                            <input type="file" class="d-none" id="watermark-file" name="watermark" accept="image/*">
-                        </div>
-                    </div>
-                </div>
-            </td>
             <td width="10%" class="text-primary">About Image :</td>
             <td>
                 <div class="position-relative">
-                    <img data-src="{{ $profile->about_image ? url($profile->about_image) : '' }}" width="50px" height="50px" id="about_img" class="lazy">
+                    <img data-src="{{ $profile->about_image ? url($profile->about_image) : '' }}" width="250px" height="250px" id="about_img" class="lazy">
                     <div class="watermark-img-overlay position-absolute">
                         <div class="circle">
                             <i class="fa-duotone fa-solid fa-camera" id="about-img-icon"></i>

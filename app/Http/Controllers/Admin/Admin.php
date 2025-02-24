@@ -63,7 +63,6 @@ class Admin extends Controller
         $validTypes = [
             'logo' => ['jpeg', 'png', 'jpg', 'gif'],
             'favicon' => ['ico', 'png', 'svg'],
-            'watermark' => ['png', 'svg'],
             'about_image' => ['jpeg', 'png', 'webp']
         ];
     

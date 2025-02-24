@@ -13,7 +13,7 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         AdminModel::create([
-            'name'       => 'Fahad',
+            'name'       => 'Fahad Jdy',
             'slogan'     => 'Administrator',
             'email_1'    => 'fahadjdy12@gmail.com', 
             'email_2'    => null, 
