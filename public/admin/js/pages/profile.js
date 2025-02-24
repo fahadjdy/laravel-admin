@@ -37,7 +37,7 @@ profileFile.addEventListener('change', function () {
         var formData = new FormData();
         formData.append('logo', file);
 
-        fetch(location.origin + '/admin/profile/logo/save', {
+        fetch(location.origin + '/admin/profile/site-detail/logo/save', {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -231,6 +231,67 @@ profileFile.addEventListener('change', function () {
             .catch(error => console.error('Error:', error));
         }
     });
+
+
+
+    // ******** About Image ********
+    let aboutImgIcon = document.getElementById('about-img-icon');
+    let aboutImgFile = document.getElementById('about-img-file');
+    let aboutImg = document.getElementById('about_img');
+    
+    aboutImgIcon.addEventListener('click', function () {
+        aboutImgFile.click();
+    });
+    
+    aboutImgFile.addEventListener('change', function () {
+        if (this.files && this.files[0]) {
+            let file = this.files[0];
+            let allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    
+            // Check if the selected file is a valid image type
+            if (!allowedTypes.includes(file.type)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid File Type!',
+                    text: 'Please select a valid image file (JPG, PNG, WEBP).',
+                });
+                return;
+            }
+    
+            var formData = new FormData();
+            formData.append('about_image', file);
+    
+            fetch(location.origin + '/admin/profile/site-detail/about_image/save', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    aboutImg.src = data.image;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Image Updated!',
+                        text: 'Your about image has been updated successfully.',
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Upload Failed!',
+                        text: data.message,
+                    });
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+    
+
+
+
 
     $('#siteDetailsForm').on('submit', function(e) {
         e.preventDefault();

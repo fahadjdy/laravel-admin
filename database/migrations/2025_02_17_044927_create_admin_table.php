@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('email_2')->nullable()->unique(); // Secondary email (optional)
             $table->string('contact_1'); // Primary contact number
             $table->string('contact_2')->nullable(); // Secondary contact (optional)
-            $table->text('address_1'); // Primary address
+            $table->text('about')->nullable(); // About Company
+            $table->text('address_1')->nullable(); // Primary address
             $table->text('address_2')->nullable(); // Secondary address (optional)
             $table->string('password'); // Password
 
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->string('logo')->nullable(); // Logo image path
             $table->string('favicon')->nullable(); // Favicon image path
             $table->string('watermark')->nullable(); // Watermark image path
+            $table->string('about_image')->nullable(); // About image path
             $table->boolean('is_maintenance')->default(false); // Maintenance mode flag
             $table->boolean('is_watermark')->default(false); // Watermarking flag
 

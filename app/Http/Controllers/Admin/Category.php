@@ -193,7 +193,7 @@ class Category extends Controller
             'name' => 'required|string|max:255',
             'status' => 'required|boolean',
             'parent_category' => 'nullable|exists:category,id',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10048',
             'thumbnail' => 'nullable|string', // Thumbnail will be selected from uploaded images
             'content' => 'nullable|string',
         ]);

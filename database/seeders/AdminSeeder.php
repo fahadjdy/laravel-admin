@@ -19,6 +19,7 @@ class AdminSeeder extends Seeder
             'email_2'    => null, 
             'contact_1'  => '7203070468', 
             'contact_2'  => null, 
+            'about'  => '', 
             'address_1'  => 'Admin Address', 
             'address_2'  => null, 
             'password'   => bcrypt('Admin123@'),

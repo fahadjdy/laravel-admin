@@ -17,13 +17,13 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function () {
     Route::get('/dashboard', [Admin::class, 'dashboard']);
 
-    // Profile 
+    // Save Images for profile page 
     Route::get('/profile', [Admin::class, 'profile']);
-    Route::post('/profile/logo/save', [Admin::class, 'saveProfileLogo'])->name('admin.profile.logo.save'); // logo update
+    Route::post('/profile/site-detail/{type}/save', [Admin::class, 'saveImage'])->name('admin.profile.image.save');
+
    
    // Profile - Site Detail
-    Route::post('/profile/site-detail/favicon/save', [Admin::class, 'saveFavicon'])->name('admin.profile.favicon.save'); // logo update
-    Route::post('/profile/site-detail/watermark/save', [Admin::class, 'saveWatermark'])->name('admin.profile.watermark.save'); // logo update
+    
     Route::post('/profile/site-detail/{id}', [Admin::class, 'saveSiteDetails'])->name('profile.site.detail.update');
 
     // Profile - Bio Data
