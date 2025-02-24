@@ -10,8 +10,7 @@
         <div class="card my-3 p-3">
             <div class="d-flex align-items-center">
                 <div class="profile-img  position-relative">
-                    <img src="{{ url($profile->logo) }}" alt="profile" class="img-fluid rounded-circle" id="profile-img">
-                    <!-- <img src="{{ asset('admin/img/auth/login-bg.jpg') }}" alt="profile" class="img-fluid rounded-circle" id="profile-img"> -->
+                    <img data-src="{{ url($profile->logo) }}" alt="profile" class="img-fluid rounded-circle lazy" id="profile-img">
                     <div class="profile-img-overlay position-absolute">
                         <div class="circle">
                             <i class="fa-duotone fa-solid fa-camera" id="profile-icon"></i>
