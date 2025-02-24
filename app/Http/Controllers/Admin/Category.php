@@ -8,6 +8,7 @@ use App\Models\Admin\CategoryModel;
 use App\Models\Admin\AdminModel;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Admin\CategoryImageModel;
+use Cache;
 
 class Category extends Controller
 {
@@ -23,14 +24,13 @@ class Category extends Controller
         if ($id) {
             $category = CategoryModel::findOrFail($id);
         }
-// p($category);
+        
         return view('admin.addOrEditCategory', compact('categories', 'category'));
     }
 
 
     public function store(Request $request)
     {
-
         return $this->saveCategory($request, new CategoryModel());
     }
 
@@ -40,7 +40,6 @@ class Category extends Controller
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);
         }
-
         return $this->saveCategory($request, $category);
     }
 
@@ -59,6 +58,18 @@ class Category extends Controller
             // Define sortable columns mapping
             $columns = ['id', 'name', 'parent_id']; // Matches table columns
             $sortColumn = $columns[$orderColumnIndex] ?? 'id'; // Default to 'id'
+
+
+            // memcache 
+            // Generate cache key based on pagination, sorting, and search
+            $cacheKey = "categories";
+
+            // Try to fetch cached data
+            $cachedData = Cache::get($cacheKey);
+
+            if ($cachedData) {
+                return response()->json($cachedData);
+            }
 
             // Base query with search filter
             $query = CategoryModel::with('parent'); // Only top-level categories
@@ -99,12 +110,17 @@ class Category extends Controller
                 ];
             });
 
-            return response()->json([
+            $responseData = [
                 "draw" => intval($draw),
                 "recordsTotal" => $totalRecords,
                 "recordsFiltered" => $filteredRecords,
                 "data" => $formattedCategories
-            ]);
+            ];
+    
+            // Store the response in cache for 10 minutes
+            Cache::put($cacheKey, $responseData, now()->addMinutes(10));
+
+            return response()->json($responseData);    
         }
     }
 
@@ -146,6 +162,7 @@ class Category extends Controller
         // Delete record from DB
         $image->delete();
 
+        Cache::forget('categories');
         return response()->json(['message' => 'Image deleted successfully!']);
     }
 
@@ -177,11 +194,10 @@ class Category extends Controller
         // Finally, delete the category itself
         $category->delete();
     
+        Cache::forget('categories');
         return response()->json(['success' => 'Category and its subcategories deleted successfully.']);
     }
-    
-
-       
+           
     private function saveCategory(Request $request, CategoryModel $category)
     {
         $validator = Validator::make($request->all(), [
@@ -244,7 +260,9 @@ class Category extends Controller
             $category->thumbnail = $request->thumbnail;
             $category->save();
         }
-    
+
+        // clear cache
+        Cache::forget('categories');
         return response()->json(['message' => 'Category saved successfully!']);
     }
     
