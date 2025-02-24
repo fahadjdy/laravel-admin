@@ -60,16 +60,6 @@ class Category extends Controller
             $sortColumn = $columns[$orderColumnIndex] ?? 'id'; // Default to 'id'
 
 
-            // memcache 
-            // Generate cache key based on pagination, sorting, and search
-            $cacheKey = "categories";
-
-            // Try to fetch cached data
-            $cachedData = Cache::get($cacheKey);
-
-            if ($cachedData) {
-                return response()->json($cachedData);
-            }
 
             // Base query with search filter
             $query = CategoryModel::with('parent'); // Only top-level categories
@@ -117,9 +107,6 @@ class Category extends Controller
                 "data" => $formattedCategories
             ];
     
-            // Store the response in cache for 10 minutes
-            Cache::put($cacheKey, $responseData, now()->addMinutes(10));
-
             return response()->json($responseData);    
         }
     }
@@ -162,7 +149,6 @@ class Category extends Controller
         // Delete record from DB
         $image->delete();
 
-        Cache::forget('categories');
         return response()->json(['message' => 'Image deleted successfully!']);
     }
 
@@ -190,11 +176,9 @@ class Category extends Controller
             $this->destroy($subcategory->id); // Recursively call destroy
         }
     
-    
-        // Finally, delete the category itself
         $category->delete();
     
-        Cache::forget('categories');
+        
         return response()->json(['success' => 'Category and its subcategories deleted successfully.']);
     }
            
@@ -262,7 +246,7 @@ class Category extends Controller
         }
 
         // clear cache
-        Cache::forget('categories');
+        
         return response()->json(['message' => 'Category saved successfully!']);
     }
     
