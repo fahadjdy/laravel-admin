@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('icon'); 
             $table->string('name'); 
-            $table->string('link'); 
+            $table->text('link'); 
             $table->boolean('is_active')->default(1); 
             $table->timestamps();
         });

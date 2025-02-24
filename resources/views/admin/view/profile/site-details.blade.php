@@ -4,7 +4,7 @@
             <td width="10%" class="text-primary">Favicon :</td>
             <td>
                 <div class="position-relative">
-                    <img data-src="{{ url($profile->favicon) }}" width="50px" height="50px" id="favicon-img" class="lazy">
+                    <img data-src="{{ $profile->favicon ? url($profile->favicon) : '' }}" width="50px" height="50px" id="favicon-img" class="lazy">
                     <div class="favicon-img-overlay position-absolute">
                         <div class="circle">
                             <i class="fa-duotone fa-solid fa-camera" id="favicon-icon"></i>
@@ -13,14 +13,14 @@
                     </div>
                 </div>
             </td>
-            <td width="10%" class="text-primary">Watermark :</td>
+            <td width="10%" class="text-primary">About Image :</td>
             <td>
                 <div class="position-relative">
-                    <img data-src="{{ $profile->watermark ? url($profile->watermark) : asset('admin/img/auth/login-bg.jpg') }}" width="50px" height="50px" id="watermark-img" class="lazy">
+                    <img data-src="{{ $profile->about_image ? url($profile->about_image) : '' }}" width="250px" height="250px" id="about_img" class="lazy">
                     <div class="watermark-img-overlay position-absolute">
                         <div class="circle">
-                            <i class="fa-duotone fa-solid fa-camera" id="watermark-icon"></i>
-                            <input type="file" class="d-none" id="watermark-file" name="watermark" accept="image/*">
+                            <i class="fa-duotone fa-solid fa-camera" id="about-img-icon"></i>
+                            <input type="file" class="d-none" id="about-img-file" name="about_img" accept="image/*">
                         </div>
                     </div>
                 </div>
@@ -40,6 +40,14 @@
                 <div class="col-md-3 text-primary">
                     <label for="is_maintenance" class="form-label">Maintenance Mode:</label>
                     <input type="checkbox" name="is_maintenance" id="is_maintenance" class="mx-2 form-check-input" {{ $profile->is_maintenance ? 'checked' : '' }}>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                   
+                </div>
+                <div class="col-md-8">
+
                 </div>
             </div>
 

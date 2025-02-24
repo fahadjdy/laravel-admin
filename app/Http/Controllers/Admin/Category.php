@@ -193,7 +193,7 @@ class Category extends Controller
             'name' => 'required|string|max:255',
             'status' => 'required|boolean',
             'parent_category' => 'nullable|exists:category,id',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10048',
             'thumbnail' => 'nullable|string', // Thumbnail will be selected from uploaded images
             'content' => 'nullable|string',
         ]);
@@ -214,7 +214,7 @@ class Category extends Controller
     
         // Save watermark settings
         $is_watermark = AdminModel::value('is_watermark');
-        $watermark = (AdminModel::value('watermark')) ? public_path(AdminModel::value('watermark')) : '';
+        $watermark = (AdminModel::value('name')) ? AdminModel::value('name') : 'Fahad Jdy';
 
         // Handle multiple image uploads
         if ($request->hasFile('images')) {
@@ -224,8 +224,8 @@ class Category extends Controller
                 $image->move(public_path('admin/img/category'), $imageName);
 
                 // Apply watermark if enabled
-                if ($is_watermark && file_exists($watermark)) {
-                    applyWatermark($imagePath, $watermark, $imagePath, 'center', 10, 10,75);
+                if ($is_watermark) {
+                    applyTextWatermark($imagePath, $imagePath,$watermark, 15);
                 }
 
                 // Save image path in category_images table
