@@ -4,7 +4,7 @@
             <td width="10%" class="text-primary">Favicon :</td>
             <td>
                 <div class="position-relative">
-                    <img src="{{ url($profile->favicon) }}" width="50px" height="50px" id="favicon-img">
+                    <img data-src="{{ url($profile->favicon) }}" width="50px" height="50px" id="favicon-img" class="lazy">
                     <div class="favicon-img-overlay position-absolute">
                         <div class="circle">
                             <i class="fa-duotone fa-solid fa-camera" id="favicon-icon"></i>
@@ -16,7 +16,7 @@
             <td width="10%" class="text-primary">Watermark :</td>
             <td>
                 <div class="position-relative">
-                    <img src="{{ $profile->watermark ? url($profile->watermark) : asset('admin/img/auth/login-bg.jpg') }}" width="50px" height="50px" id="watermark-img">
+                    <img data-src="{{ $profile->watermark ? url($profile->watermark) : asset('admin/img/auth/login-bg.jpg') }}" width="50px" height="50px" id="watermark-img" class="lazy">
                     <div class="watermark-img-overlay position-absolute">
                         <div class="circle">
                             <i class="fa-duotone fa-solid fa-camera" id="watermark-icon"></i>

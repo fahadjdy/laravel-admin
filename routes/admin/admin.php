@@ -4,6 +4,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Admin;
 use App\Http\Controllers\Admin\Category;
+use App\Http\Controllers\Admin\Slider;
+use App\Http\Controllers\Admin\Testimonial;
 use App\Http\Middleware\Admin\AdminAuth;
 use App\Http\Controllers\Admin\SocialMedia;
 
@@ -34,7 +36,7 @@ Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function
     Route::delete('/profile/social-media/delete/{id}', [SocialMedia::class, 'destroy']);
     
 
-    Route::get('/category', [Admin::class, 'category']);
+    Route::get('/category', [Category::class, 'index']);
     Route::post('/category/getAjaxCategory', [Category::class, 'getAjaxCategory']);
     Route::get('/category/add', [Category::class, 'addOrEditCategory']);
     Route::get('/category/edit/{id}', [Category::class, 'addOrEditCategory'])->name('category.edit');
@@ -44,6 +46,12 @@ Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function
     Route::delete('/category/image/delete/{id}', [Category::class, 'deleteCategoryImage']);
 
 
+    // Testimonial 
+    Route::get('/testimonial', [Testimonial::class, 'index']);
+
+
+    // Slider 
+    Route::get('/slider', [Slider::class, 'index']);
 
     Route::post('profile/update', [Admin::class, 'update'])->name('admin.profile.update');    
     Route::post('profile/change-password', [Admin::class, 'changePassword'])->name('admin.profile.change_password');

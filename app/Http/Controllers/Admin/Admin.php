@@ -207,9 +207,6 @@ class Admin extends Controller
         return response()->json(['success' => true, 'message' => 'Profile updated successfully!']);
     }
 
-    public function category()
-    {
-        return view('admin.category');
-    }
+   
     
 }
