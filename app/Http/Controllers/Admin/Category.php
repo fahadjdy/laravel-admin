@@ -8,9 +8,15 @@ use App\Models\Admin\CategoryModel;
 use App\Models\Admin\AdminModel;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Admin\CategoryImageModel;
+use Cache;
 
 class Category extends Controller
 {
+
+    public function index()
+    {
+        return view('admin.Category.category');
+    }
     
     public function addOrEditCategory($id = null)
     {
@@ -23,14 +29,13 @@ class Category extends Controller
         if ($id) {
             $category = CategoryModel::findOrFail($id);
         }
-// p($category);
-        return view('admin.addOrEditCategory', compact('categories', 'category'));
+        
+        return view('admin.Category.addOrEditCategory', compact('categories', 'category'));
     }
 
 
     public function store(Request $request)
     {
-
         return $this->saveCategory($request, new CategoryModel());
     }
 
@@ -40,7 +45,6 @@ class Category extends Controller
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);
         }
-
         return $this->saveCategory($request, $category);
     }
 
@@ -59,6 +63,8 @@ class Category extends Controller
             // Define sortable columns mapping
             $columns = ['id', 'name', 'parent_id']; // Matches table columns
             $sortColumn = $columns[$orderColumnIndex] ?? 'id'; // Default to 'id'
+
+
 
             // Base query with search filter
             $query = CategoryModel::with('parent'); // Only top-level categories
@@ -99,12 +105,14 @@ class Category extends Controller
                 ];
             });
 
-            return response()->json([
+            $responseData = [
                 "draw" => intval($draw),
                 "recordsTotal" => $totalRecords,
                 "recordsFiltered" => $filteredRecords,
                 "data" => $formattedCategories
-            ]);
+            ];
+    
+            return response()->json($responseData);    
         }
     }
 
@@ -173,15 +181,12 @@ class Category extends Controller
             $this->destroy($subcategory->id); // Recursively call destroy
         }
     
-    
-        // Finally, delete the category itself
         $category->delete();
     
+        
         return response()->json(['success' => 'Category and its subcategories deleted successfully.']);
     }
-    
-
-       
+           
     private function saveCategory(Request $request, CategoryModel $category)
     {
         $validator = Validator::make($request->all(), [
@@ -244,7 +249,9 @@ class Category extends Controller
             $category->thumbnail = $request->thumbnail;
             $category->save();
         }
-    
+
+        // clear cache
+        
         return response()->json(['message' => 'Category saved successfully!']);
     }
     
