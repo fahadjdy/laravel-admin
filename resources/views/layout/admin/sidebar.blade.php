@@ -6,7 +6,7 @@
         <a href="{{ url('/admin/category') }}"> <i class="fa-duotone fa-solid fa-user"></i> Category</a>
     </li>
     <li>
-        <a href="{{ url('/admin/testimonial') }}"> <i class="fa-duotone fa-solid fa-users"></i> Testimonials</a>
+        <a href="{{ url('/admin/testimonial') }}"> <i class="fa-duotone fa-solid fa-users"></i> Testimonial</a>
     </li>
     <li>
         <a href="{{ url('/admin/slider') }}"> <i class="fa-duotone fa-solid fa-image"></i> Slider</a>

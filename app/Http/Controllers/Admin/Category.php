@@ -12,6 +12,11 @@ use Cache;
 
 class Category extends Controller
 {
+
+    public function index()
+    {
+        return view('admin.Category.category');
+    }
     
     public function addOrEditCategory($id = null)
     {
@@ -25,7 +30,7 @@ class Category extends Controller
             $category = CategoryModel::findOrFail($id);
         }
         
-        return view('admin.addOrEditCategory', compact('categories', 'category'));
+        return view('admin.Category.addOrEditCategory', compact('categories', 'category'));
     }
 
 
