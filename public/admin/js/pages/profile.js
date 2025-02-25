@@ -37,7 +37,7 @@ profileFile.addEventListener('change', function () {
         var formData = new FormData();
         formData.append('logo', file);
 
-        fetch(location.origin + '/admin/profile/logo/save', {
+        fetch(location.origin + '/admin/profile/site-detail/logo/save', {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -178,33 +178,35 @@ profileFile.addEventListener('change', function () {
         }
     });
 
-    //  ******* Watermark  Code *******
-    let watermarkIcon = document.getElementById('watermark-icon');
-    let watermarkFile = document.getElementById('watermark-file');
-    let watermarkImg = document.getElementById('watermark-img');
-
-    watermarkIcon.addEventListener('click', function () {
-        watermarkFile.click();
+  
+    // ******** About Image ********
+    let aboutImgIcon = document.getElementById('about-img-icon');
+    let aboutImgFile = document.getElementById('about-img-file');
+    let aboutImg = document.getElementById('about_img');
+    
+    aboutImgIcon.addEventListener('click', function () {
+        aboutImgFile.click();
     });
-
-    watermarkFile.addEventListener('change', function () {
+    
+    aboutImgFile.addEventListener('change', function () {
         if (this.files && this.files[0]) {
             let file = this.files[0];
-            let allowedTypes = ['image/png', 'image/svg+xml'];
-
+            let allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    
+            // Check if the selected file is a valid image type
             if (!allowedTypes.includes(file.type)) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Invalid File Type!',
-                    text: 'Please select a valid watermark file (PNG, SVG).',
+                    text: 'Please select a valid image file (JPG, PNG, WEBP).',
                 });
                 return;
             }
-
+    
             var formData = new FormData();
-            formData.append('watermark', file);
-
-            fetch(location.origin + '/admin/profile/site-detail/watermark/save', {
+            formData.append('about_image', file);
+    
+            fetch(location.origin + '/admin/profile/site-detail/about_image/save', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -214,11 +216,11 @@ profileFile.addEventListener('change', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    watermarkImg.src = data.image;
+                    aboutImg.src = data.image;
                     Swal.fire({
                         icon: 'success',
-                        title: 'Watermark Updated!',
-                        text: 'Your watermark has been updated successfully.',
+                        title: 'Image Updated!',
+                        text: 'Your about image has been updated successfully.',
                     });
                 } else {
                     Swal.fire({
@@ -231,6 +233,10 @@ profileFile.addEventListener('change', function () {
             .catch(error => console.error('Error:', error));
         }
     });
+    
+
+
+
 
     $('#siteDetailsForm').on('submit', function(e) {
         e.preventDefault();

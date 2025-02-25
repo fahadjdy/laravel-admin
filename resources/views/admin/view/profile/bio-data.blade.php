@@ -55,6 +55,15 @@
             <div class="row my-2">
                 <div class="col-md-12">
                     <div class="form-group">
+                        <label for="bio-about" class="text-primary">About</label>
+                        <textarea id="bio-about" name="bio-about" class="form-control" rows="4">{{ $profile->about }}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-md-12">
+                    <div class="form-group">
                         <label for="bio-address-1" class="text-primary">Address 1:</label>
                         <textarea id="bio-address-1" name="bio-address-1" class="form-control" rows="4">{{ $profile->address_1 }}</textarea>
                     </div>

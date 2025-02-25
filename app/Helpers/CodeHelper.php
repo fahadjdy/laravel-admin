@@ -154,118 +154,65 @@ if (!function_exists('p')) {
 
 /**
  * Applies a watermark to an image using the GD Library with adjustable opacity.
- *
- * @param string $sourcePath   Path to the source image.
- * @param string $watermarkPath  Path to the watermark image.
- * @param string $savePath     Path to save the watermarked image.
- * @param string $position     Position of the watermark (default 'bottom-right').
- * @param int $xOffset         Horizontal offset (in pixels) from the position (default 10).
- * @param int $yOffset         Vertical offset (in pixels) from the position (default 10).
- * @param int $opacity         Opacity for the watermark (0-100, default 50).
- *
- * @return bool Returns true on success or false on failure.
  */
-function applyWatermark($sourcePath, $watermarkPath, $savePath, $position = 'bottom-right', $xOffset = 10, $yOffset = 10, $opacity = 75)
+function applyTextWatermark($sourcePath, $savePath, $text = "Watermark", $opacity = 30)
 {
-    // Get source image info and create image instance
-    $sourceInfo = getimagesize($sourcePath);
-    if (!$sourceInfo) return false;
+    // Load source image
+    $sourceImage = imagecreatefromjpeg($sourcePath);
+    if (!$sourceImage) return false;
 
-    $sourceMime = $sourceInfo['mime'];
-    switch ($sourceMime) {
-        case 'image/jpeg': 
-            $sourceImage = imagecreatefromjpeg($sourcePath); 
-            break;
-        case 'image/png': 
-            $sourceImage = imagecreatefrompng($sourcePath); 
-            break;
-        case 'image/gif': 
-            $sourceImage = imagecreatefromgif($sourcePath); 
-            break;
-        default: 
-            return false;
-    }
-
-    // Get watermark image info and create watermark instance
-    $watermarkInfo = getimagesize($watermarkPath);
-    if (!$watermarkInfo) return false;
-
-    switch ($watermarkInfo['mime']) {
-        case 'image/jpeg': 
-            $watermarkImage = imagecreatefromjpeg($watermarkPath); 
-            break;
-        case 'image/png': 
-            $watermarkImage = imagecreatefrompng($watermarkPath); 
-            break;
-        case 'image/gif': 
-            $watermarkImage = imagecreatefromgif($watermarkPath); 
-            break;
-        default: 
-            return false;
-    }
-
-    // Get dimensions for positioning
+    // Get image dimensions
     $sourceWidth = imagesx($sourceImage);
     $sourceHeight = imagesy($sourceImage);
-    $watermarkWidth = imagesx($watermarkImage);
-    $watermarkHeight = imagesy($watermarkImage);
 
-    // Calculate destination coordinates based on desired position
-    switch ($position) {
-        case 'top-left': 
-            $destX = $xOffset; 
-            $destY = $yOffset; 
-            break;
-        case 'top-right': 
-            $destX = $sourceWidth - $watermarkWidth - $xOffset; 
-            $destY = $yOffset; 
-            break;
-        case 'bottom-left': 
-            $destX = $xOffset; 
-            $destY = $sourceHeight - $watermarkHeight - $yOffset; 
-            break;
-        case 'center': 
-            $destX = ($sourceWidth - $watermarkWidth) / 2; 
-            $destY = ($sourceHeight - $watermarkHeight) / 2; 
-            break;
-        case 'bottom-right':
-        default: 
-            $destX = $sourceWidth - $watermarkWidth - $xOffset; 
-            $destY = $sourceHeight - $watermarkHeight - $yOffset; 
-            break;
+    // Set font properties
+    $fontSize = 80; // Adjust font size as needed
+    $angle = 0; // Angle of text
+    $fontFile = public_path("admin/font/Sigmar-Regular.ttf"); // Path to TTF font (ensure this file exists)
+    
+    if (!file_exists($fontFile)) {
+        return false; // Font file is required
     }
 
-    // Merge the watermark with the source image using imagecopymerge.
-    // Note: imagecopymerge() works best with truecolor images.
-    imagecopymerge(
-        $sourceImage,    // Destination image
-        $watermarkImage, // Source watermark image
-        $destX,          // Destination X
-        $destY,          // Destination Y
-        0,               // Source X
-        0,               // Source Y
-        $watermarkWidth, // Source width
-        $watermarkHeight,// Source height
-        $opacity         // Opacity percentage (0 = transparent, 100 = opaque)
-    );
+    // Get text bounding box
+    $bbox = imagettfbbox($fontSize, $angle, $fontFile, $text);
+    $textWidth = $bbox[2] - $bbox[0];
+    $textHeight = $bbox[1] - $bbox[7];
 
-    // Save the image in the original format
-    $saved = false;
-    switch ($sourceMime) {
-        case 'image/jpeg': 
-            $saved = imagejpeg($sourceImage, $savePath, 90); 
-            break;
-        case 'image/png': 
-            $saved = imagepng($sourceImage, $savePath, 6); 
-            break;
-        case 'image/gif': 
-            $saved = imagegif($sourceImage, $savePath); 
-            break;
+    // Center the text
+    $x = ($sourceWidth - $textWidth) / 2;
+    $y = ($sourceHeight + $textHeight) / 2; // Adjusted for baseline correction
+
+    // Create a transparent image layer for the watermark
+    $watermarkLayer = imagecreatetruecolor($sourceWidth, $sourceHeight);
+    imagesavealpha($watermarkLayer, true);
+    $transparentColor = imagecolorallocatealpha($watermarkLayer, 0, 0, 0, 127);
+    imagefill($watermarkLayer, 0, 0, $transparentColor);
+
+    // Allocate colors
+    $white = imagecolorallocate($watermarkLayer, 255, 255, 255);
+    $black = imagecolorallocate($watermarkLayer, 0, 0, 0);
+
+    // Apply stroke effect (shadow) for better visibility
+    for ($dx = -2; $dx <= 2; $dx++) {
+        for ($dy = -2; $dy <= 2; $dy++) {
+            imagettftext($watermarkLayer, $fontSize, $angle, $x + $dx, $y + $dy, $black, $fontFile, $text);
+        }
     }
+
+    // Apply the main white text over the shadow
+    imagettftext($watermarkLayer, $fontSize, $angle, $x, $y, $white, $fontFile, $text);
+
+    // Merge the transparent watermark layer onto the source image with opacity
+    imagecopymerge($sourceImage, $watermarkLayer, 0, 0, 0, 0, $sourceWidth, $sourceHeight, $opacity);
+
+    // Save the final image
+    imagejpeg($sourceImage, $savePath, 90);
 
     // Clean up
     imagedestroy($sourceImage);
-    imagedestroy($watermarkImage);
+    imagedestroy($watermarkLayer);
 
-    return $saved;
+    return true;
 }
+

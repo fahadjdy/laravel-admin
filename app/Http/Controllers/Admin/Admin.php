@@ -58,108 +58,50 @@ class Admin extends Controller
         $profile = AdminModel::find(1);
         return view('admin.profile',compact('profile'));
     }
-
-    public function saveProfileLogo(Request $request)
+    public function saveImage(Request $request, $type)
     {
-        // Validate that an image file is uploaded
-        $request->validate([
-            'logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        $validTypes = [
+            'logo' => ['jpeg', 'png', 'jpg', 'gif'],
+            'favicon' => ['ico', 'png', 'svg'],
+            'about_image' => ['jpeg', 'png', 'webp']
+        ];
     
-        $admin = AdminModel::find(1); // Assuming admin ID is 1
-    
-        if ($request->hasFile('logo')) {
-            $file = $request->file('logo');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $destinationPath = public_path('admin/img/profile');
-    
-            // Ensure the directory exists
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true);
-            }
-    
-            // Check if an old profile image exists and delete it
-            if ($admin->logo && file_exists(public_path($admin->logo))) {
-                unlink(public_path($admin->logo));  // Remove the old image
-            }
-    
-            // Move the new file to the destination
-            $file->move($destinationPath, $filename);
-    
-            // Save the new image path in the database
-            $admin->logo = "admin/img/profile/" . $filename;
-            $admin->save();
-    
-            return response()->json(['success' => true, 'image' => asset("admin/img/profile/$filename")]);
+        if (!isset($validTypes[$type])) {
+            return response()->json(['success' => false, 'message' => 'Invalid image type!']);
         }
     
-        return response()->json(['success' => false, 'message' => 'Image upload failed!']);
-    }
+        $request->validate([
+            $type => 'required|image|mimes:' . implode(',', $validTypes[$type]) . '|max:10048',
+        ]);
     
-    public function saveFavicon(Request $request)
-    {
-        $request->validate([
-            'favicon' => 'required|image|mimes:ico,png,svg|max:2048',
-        ]);
-
-        $admin = AdminModel::find(1); 
-
-        if ($request->hasFile('favicon')) {
-            $file = $request->file('favicon');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $destinationPath = public_path('admin/img/profile');
-
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true);
-            }
-            
-            if ($admin->favicon && file_exists(public_path($admin->favicon))) {
-                unlink(public_path($admin->favicon));  
-            }
-
-            $file->move($destinationPath, $filename);
-
-            $admin->favicon = "admin/img/profile/" . $filename;
-            $admin->save();
-
-            return response()->json(['success' => true, 'image' => asset("admin/img/profile/$filename")]);
-        }
-
-        return response()->json(['success' => false, 'message' => 'Favicon upload failed!']);
-    }
-
-
-    public function saveWatermark(Request $request)
-    {
-        $request->validate([
-            'watermark' => 'required|image|mimes:png,svg|max:2048',
-        ]);
-
         $admin = AdminModel::find(1);
-
-        if ($request->hasFile('watermark')) {
-            $file = $request->file('watermark');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+    
+        if ($request->hasFile($type)) {
+            $file = $request->file($type);
+            $filename = $type . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $destinationPath = public_path('admin/img/profile');
-
+    
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0777, true);
             }
-            
-            if ($admin->watermark && file_exists(public_path($admin->watermark))) {
-                unlink(public_path($admin->watermark));
+    
+            if ($admin->$type && file_exists(public_path($admin->$type))) {
+                unlink(public_path($admin->$type));
             }
-
+    
             $file->move($destinationPath, $filename);
-
-            $admin->watermark = "admin/img/profile/" . $filename;
+    
+            $admin->$type = "admin/img/profile/" . $filename;
             $admin->save();
-
+    
             return response()->json(['success' => true, 'image' => asset("admin/img/profile/$filename")]);
         }
-
-        return response()->json(['success' => false, 'message' => 'Watermark upload failed!']);
+    
+        return response()->json(['success' => false, 'message' => ucfirst(str_replace('_', ' ', $type)) . ' upload failed!']);
     }
+    
+
+
 
     public function saveSiteDetails(Request $request)
     {
@@ -199,6 +141,7 @@ class Admin extends Controller
                 'email_2' => $request->input('bio-email-2'),
                 'contact_1' => $request->input('bio-contact-1'),
                 'contact_2' => $request->input('bio-contact-2'),
+                'about' => $request->input('bio-about'),
                 'address_1' => $request->input('bio-address-1'),
                 'address_2' => $request->input('bio-address-2'),
             ]
