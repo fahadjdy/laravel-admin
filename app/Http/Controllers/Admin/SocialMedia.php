@@ -38,7 +38,7 @@ class SocialMedia extends Controller
                 $nestedData['id'] = $row->id;
                 $nestedData['icon'] = "<i class='{$row->icon}'></i>";
                 $nestedData['name'] = $row->name;
-                $nestedData['link'] = "<a href='{$row->link}' target='_blank'>{$row->link}</a>";
+                $nestedData['link'] = "<a href='" . htmlspecialchars($row->link, ENT_QUOTES, 'UTF-8') . "' target='_blank' rel='noopener noreferrer'>" . htmlspecialchars($row->link, ENT_QUOTES, 'UTF-8') . "</a>";
                 $nestedData['is_active'] = $row->is_active
                     ? "<button class='btn btn-success btn-sm toggle-status' data-id='{$row->id}'>Active</button>"
                     : "<button class='btn btn-danger btn-sm toggle-status' data-id='{$row->id}'>Inactive</button>";
@@ -58,12 +58,23 @@ class SocialMedia extends Controller
 
     public function store(Request $request)
     {
+        $validator = SocialMediaModel::validate($request->all());
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         $social = SocialMediaModel::create($request->all());
         return response()->json($social);
     }
 
     public function update(Request $request, $id)
     {
+
+        $validator = SocialMediaModel::validate($request->all());
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         $social = SocialMediaModel::find($id);
         $social->update($request->all());
         return response()->json($social);

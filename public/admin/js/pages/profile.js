@@ -277,6 +277,8 @@ profileFile.addEventListener('change', function () {
     let socialMediaTable = $('#social-media-table').DataTable({
         processing: true,
         serverSide: true,
+        responsive: true, 
+        autoWidth: false, 
         ajax: location.origin + '/admin/profile/social-media/getAjaxSocialMedia',
         columns: [
             { data: 'id' },
@@ -289,16 +291,41 @@ profileFile.addEventListener('change', function () {
 
     $('#save-social').click(function() {
         let id = $('#social-id').val();
-        let data = { icon: $('#social-icon').val(), name: $('#social-name').val(), link: $('#social-link').val() };
-        let url = id ? location.origin + `/admin/profile/social-media/update/${id}` :  location.origin + "/admin/profile/social-media/store";
-
-        $.post(url, data, function(response) {
-            $('#socialMediaModal').modal('hide'); 
-            $('#social-id').val(''); 
-            $('#social-icon, #social-name, #social-link').val(''); 
-            socialMediaTable.ajax.reload(null, false); 
+        let data = {
+            icon: $('#social-icon').val(),
+            name: $('#social-name').val(),
+            link: $('#social-link').val()
+        };
+        let url = id ? location.origin + `/admin/profile/social-media/update/${id}` : location.origin + "/admin/profile/social-media/store";
+    
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            success: function(response) {
+                $('#socialMediaModal').modal('hide');
+                $('#social-id').val('');
+                $('#social-icon, #social-name, #social-link').val('');
+                socialMediaTable.ajax.reload(null, false);
+                Swal.fire('Success', response.message, 'success');
+            },
+            error: function(xhr) {
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    $('.error-message').remove();
+    
+                    $.each(errors, function(key, message) {
+                        let input = $('#social-' + key);
+                        input.after('<small class="text-danger error-message">' + message[0] + '</small></br>');
+                    });
+    
+                } else {
+                    Swal.fire('Error!', 'Something went wrong. Please try again.', 'error');
+                }
+            }
         });
     });
+    
 
     $(document).on('click', '.delete-social', function () {
         let id = $(this).data('id');

@@ -202,6 +202,7 @@ main{
     width: 80% !important;
     float: left;
     padding: 30px 0px 0px 55px;
+    overflow-x: scroll;
 }
 
 

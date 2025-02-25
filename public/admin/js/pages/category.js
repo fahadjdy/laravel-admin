@@ -14,6 +14,8 @@ $(document).ready(function () {
     $('#category-table').DataTable({
         serverSide: true,
         processing: true,
+        responsive: true, 
+        autoWidth: false, 
         ajax: {
             url: location.origin + '/admin/category/getAjaxCategory',
             type: 'POST',

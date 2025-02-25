@@ -32,8 +32,11 @@
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="social-id">
-                        <input type="text" id="social-icon" class="form-control mb-2" placeholder="exam: fa fa-user">
-                        <input type="text" id="social-name" class="form-control mb-2" placeholder="Name">
+                        <label for="social-icon">Fontawesome Icon Name</label>
+                        <input type="text" id="social-icon" maxlength="50" class="form-control mb-2" placeholder="exam: fa fa-user">
+                        <label for="social-name">Social Media Name</label>
+                        <input type="text" id="social-name" maxlength="50" class="form-control mb-2" placeholder="Name">
+                        <label for="social-link">Social Media URL</label>
                         <input type="text" id="social-link" class="form-control mb-2" placeholder="URL">
                         <button class="btn btn-primary" id="save-social">Save</button>
                     </div>
