@@ -140,26 +140,45 @@ $(document).ready(function () {
                     confirmButtonText: 'Go to Category Listing',
                     cancelButtonColor: '#6c757d',
                     confirmButtonColor: 'var(--primary-color)',
-                    reverseButtons: true // This ensures "Go to Category Listing" is on the right
+                    reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
                         let redirectUrl = typeof pre !== 'undefined' ? pre : location.origin + '/admin/category';
                         window.location.href = redirectUrl;
-                    }else{
+                    } else {
                         window.location.reload();
                     }
                 });
-                
+
                 $('#categoryForm')[0].reset();
+                $('.error-message').remove(); // Clear previous errors
             },
             error: function (xhr) {
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Something went wrong!',
-                    icon: 'error',
-                    confirmButtonColor: 'var(--primary-color)'
-                });
+                if (xhr.status === 422) { // Laravel validation error
+                    let errors = xhr.responseJSON.errors;
+                    $('.error-message').remove(); // Clear previous errors
+
+                    $.each(errors, function (key, messages) {
+                        let inputField = $('[name="' + key + '"]');
+                        inputField.after('<small class="text-danger error-message">' + messages[0] + '</small>');
+                    });
+
+                    Swal.fire({
+                        title: 'Validation Error!',
+                        text: 'Please correct the errors and try again.',
+                        icon: 'error',
+                        confirmButtonColor: 'var(--primary-color)'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Something went wrong. Please try again.',
+                        icon: 'error',
+                        confirmButtonColor: 'var(--primary-color)'
+                    });
+                }
             }
         });
     });
+
 });
