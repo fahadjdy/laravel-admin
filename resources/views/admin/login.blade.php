@@ -18,7 +18,8 @@
 <section id="login">
     <div class="container d-flex justify-content-center align-items-center vh-100 bg-gradient-primary">
         <div class="card-body d-flex justify-content-center align-items-center">
-            <form method="POST" action="{{ url('admin/kcheckLogin') }}" class="border p-4 rounded login-form">
+            <form  class="border p-4 rounded login-form" id="loginForm">
+                @method('post')
                 <div class="text-center mb-4">
                     <img src="{{ asset('author/fhd-favicon.png') }}" alt="Logo" class="logo" >
                 </div>
@@ -27,7 +28,7 @@
                 <div class="mb-3">
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
-                        <input type="text" class="form-control js-text-field" placeholder="Username" name="username" id="username" required>
+                        <input type="text" class="form-control" placeholder="Username" name="username" id="username" required>
                     </div>
                 </div>
                 <div class="mb-3">

@@ -12,7 +12,7 @@
                 <li><a class="dropdown-item" href="#"> <i class="fa-duotone fa-solid fa-gear"></i> Settings</a></li>
                 <li><a class="dropdown-item" href="{{url('/admin/profile')}}"> <i class="fa-duotone fa-solid fa-user"></i> Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#"> <i class="fa-duotone fa-solid fa-power-off"></i> Sign out</a></li>
+                <li><a class="dropdown-item" href="{{url('/admin/logout')}}"> <i class="fa-duotone fa-solid fa-power-off"></i> Sign out</a></li>
             </ul>
         </div>
     </header>

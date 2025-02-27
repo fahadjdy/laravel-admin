@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('admin', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // Admin Name
+            $table->string('username'); // Admin Name
             $table->string('slogan')->nullable(); // Optional slogan
             $table->string('email_1')->unique(); // Primary email
             $table->string('email_2')->nullable()->unique(); // Secondary email (optional)

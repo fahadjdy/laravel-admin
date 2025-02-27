@@ -17,10 +17,15 @@ var warningBgColor = '#ffe7ab';
 // @params         : icon, title, message, duration
 // @paramsType     : json 
 // @description    : use to trigger any success or fail notification
-function createToast({ status,icon, title, message, duration = 3000 }) {
-    // Create the container if it doesn't exist
-    let toastContainer = document.getElementById('toast-container');
-    if (!toastContainer) {
+function createToast({ status, icon, title, message, duration = 3000 }) {
+  // Ensure background colors are defined
+  const successBgColor = "#28a745";  // Green
+  const failBgColor = "#dc3545";    // Red
+  const warningBgColor = "#ffc107"; // Yellow
+
+  // Create the container if it doesn't exist
+  let toastContainer = document.getElementById('toast-container');
+  if (!toastContainer) {
       toastContainer = document.createElement('div');
       toastContainer.id = 'toast-container';
       toastContainer.style.position = 'fixed';
@@ -31,95 +36,95 @@ function createToast({ status,icon, title, message, duration = 3000 }) {
       toastContainer.style.flexDirection = 'column';
       toastContainer.style.gap = '10px';
       document.body.appendChild(toastContainer);
-    }
-  
-    // Create the toast element
-    const toast = document.createElement('div');
-    toast.style.display = 'flex';
-    toast.style.alignItems = 'center';
-    toast.style.justifyContent = 'space-between';
+  }
 
-    if(status == 'success'){
-      toast.style.background = succesBgColor;
-    }else if(status == 'fail'){
-      toast.style.background = failBgColor;
-    }else{
-      toast.style.background = warningBgColor;
-    }
+  // Create the toast element
+  const toast = document.createElement('div');
+  toast.style.display = 'flex';
+  toast.style.alignItems = 'center';
+  toast.style.justifyContent = 'space-between';
+  toast.style.color = '#fff';
+  toast.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.2)';
+  toast.style.padding = '10px 15px';
+  toast.style.borderRadius = '5px';
+  toast.style.minWidth = '250px';
+  toast.style.animation = 'fadeIn 0.3s ease';
 
-    toast.style.color = '#333';
-    toast.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.2)';
-    toast.style.padding = '10px 15px';
-    toast.style.borderRadius = '5px';
-    toast.style.minWidth = '250px';
-    toast.style.animation = 'fadeIn 0.3s ease';
-    toast.style.position = 'relative';
-  
-    // Icon
-    if (icon) {
-      const iconElement = document.createElement(icon.startsWith('fa-') ? 'i' : 'img');
-      if (icon.startsWith('fa-')) {
-          iconElement.className = 'fa ' + icon; // For FontAwesome icons
-          iconElement.style.fontSize = '20px'; // Adjust size for FontAwesome
-      } else {
-          iconElement.src = icon; // For image icons
-          iconElement.alt = 'Icon';
-          iconElement.style.width = '20px';
-          iconElement.style.height = '20px';
-      }
+  // Set background color based on status
+  switch (status) {
+      case 'success':
+          toast.style.background = successBgColor;
+          break;
+      case 'fail':
+          toast.style.background = failBgColor;
+          break;
+      default:
+          toast.style.background = warningBgColor;
+          break;
+  }
+
+  // Icon handling
+  if (icon) {
+      const iconElement = document.createElement('i');
+      
+      // If the icon is already prefixed with 'fa-', just use it as is
+      const iconClasses = icon.split(" "); // Convert string to array (e.g., "fa fa-trash")
+      iconClasses.forEach(cls => iconElement.classList.add(cls)); // Add all classes
+
+      iconElement.style.fontSize = '20px';
       iconElement.style.marginRight = '10px';
-      iconElement.style.color = 'red';
       toast.appendChild(iconElement);
-    }
-  
-    // Content container
-    const content = document.createElement('div');
-    content.style.flex = '1';
-    content.style.marginLeft = icon ? '10px' : '0';
-  
-    // Title
-    if (title) {
+  }
+
+
+  // Content container
+  const content = document.createElement('div');
+  content.style.flex = '1';
+  content.style.marginLeft = icon ? '10px' : '0';
+
+  // Title
+  if (title) {
       const titleElement = document.createElement('strong');
       titleElement.textContent = title;
       titleElement.style.display = 'block';
       titleElement.style.fontSize = '14px';
       titleElement.style.marginBottom = '5px';
       content.appendChild(titleElement);
-    }
-  
-    // Message
-    if (message) {
+  }
+
+  // Message
+  if (message) {
       const messageElement = document.createElement('span');
       messageElement.textContent = message;
       messageElement.style.fontSize = '12px';
       content.appendChild(messageElement);
-    }
-  
-    toast.appendChild(content);
-  
-    // Close button
-    const closeButton = document.createElement('button');
-    closeButton.textContent = '×';
-    closeButton.style.background = 'transparent';
-    closeButton.style.border = 'none';
-    closeButton.style.color = '#999';
-    closeButton.style.fontSize = '16px';
-    closeButton.style.cursor = 'pointer';
-    closeButton.style.marginLeft = '10px';
-    closeButton.onclick = () => {
-      toast.remove();
-    };
-    toast.appendChild(closeButton);
-  
-    // Append toast to the container
-    toastContainer.appendChild(toast);
-  
-    // Auto-remove the toast after the specified duration
-    setTimeout(() => {
-      toast.remove();
-    }, duration);
   }
-  
+
+  toast.appendChild(content);
+
+  // Close button
+  const closeButton = document.createElement('button');
+  closeButton.textContent = '×';
+  closeButton.style.background = 'transparent';
+  closeButton.style.border = 'none';
+  closeButton.style.color = '#fff';
+  closeButton.style.fontSize = '16px';
+  closeButton.style.cursor = 'pointer';
+  closeButton.style.marginLeft = '10px';
+  closeButton.onclick = () => {
+      toast.remove();
+  };
+  toast.appendChild(closeButton);
+
+  // Append toast to the container
+  toastContainer.appendChild(toast);
+
+  // Auto-remove the toast after the specified duration
+  setTimeout(() => {
+      toast.remove();
+  }, duration);
+}
+
 
 
 /**

@@ -11,11 +11,13 @@ use App\Http\Controllers\Admin\SocialMedia;
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/login', [Admin::class, 'login']);
-    Route::post('/checkLogin', [Admin::class, 'checkLogin']);
+    Route::get('/logout', [Admin::class, 'logout']);
+    Route::post('/checkLogin', [Admin::class, 'checkLogin'])->name('admin.checkLogin');
+
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function () {
-    Route::get('/dashboard', [Admin::class, 'dashboard']);
+    Route::get('/dashboard', [Admin::class, 'dashboard'])->name('admin.dashboard');
 
     // Save Images for profile page 
     Route::get('/profile', [Admin::class, 'profile']);

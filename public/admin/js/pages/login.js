@@ -21,3 +21,50 @@ function togglePasswordVisibility() {
     }
 }
 
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        let formData = new FormData(this);
+        
+        fetch(location.origin + '/admin/checkLogin', {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                window.location.href = data.redirect_url;
+            } else {
+
+                var errorMessage = { 
+                    status: "fail", 
+                    icon: "fa-solid fa-xmark", 
+                    title: "Fail", 
+                    message: data.message, 
+                    duration: 3000 
+                };
+                
+                createToast(errorMessage);
+                
+            }
+        })
+        .catch(error => {
+            
+            var errorMessage = { 
+                status: "fail", 
+                icon: "fa-solid fa-xmark", 
+                title: "Fail", 
+                message: error, 
+                duration: 3000 
+            };
+            
+            createToast(errorMessage);
+        });
+    });
+});
