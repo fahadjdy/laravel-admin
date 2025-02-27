@@ -82,7 +82,7 @@ class Admin extends Controller
     }
     public function profile()
     {
-        $profile = AdminModel::find(1);
+        $profile = AdminModel::find(session()->get('admin_id'));
         return view('admin.profile',compact('profile'));
     }
     public function saveImage(Request $request, $type)
@@ -101,7 +101,7 @@ class Admin extends Controller
             $type => 'required|image|mimes:' . implode(',', $validTypes[$type]) . '|max:10048',
         ]);
     
-        $admin = AdminModel::find(1);
+        $admin = AdminModel::find(session()->get('admin_id'));
     
         if ($request->hasFile($type)) {
             $file = $request->file($type);
@@ -133,7 +133,7 @@ class Admin extends Controller
     public function saveSiteDetails(Request $request)
     {
         try {
-            $profile = AdminModel::findOrFail($request->id);
+            $profile = AdminModel::findOrFail(session()->get('admin_id'));
             $profile->is_watermark = $request->has('is_watermark');
             $profile->is_maintenance = $request->has('is_maintenance');
             $profile->save();

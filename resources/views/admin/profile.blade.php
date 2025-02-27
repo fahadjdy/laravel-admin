@@ -10,7 +10,7 @@
         <div class="card my-3 p-3">
             <div class="d-flex align-items-center">
                 <div class="profile-img  position-relative">
-                    <img data-src="{{ $profile->logo ? url($profile->logo) : '' }}" alt="profile" class="img-fluid rounded-circle lazy" id="profile-img">
+                    <img data-src="{{ isset($profile->logo) ? url($profile->logo) : '' }}" alt="profile" class="img-fluid rounded-circle lazy" id="profile-img">
                     <div class="profile-img-overlay position-absolute">
                         <div class="circle">
                             <i class="fa-duotone fa-solid fa-camera" id="profile-icon"></i>
@@ -20,8 +20,8 @@
                     </div>
                 </div>
                 <div class="profile-text ms-3 admin-name px-2">
-                    <h2><span> {{ $profile->name }} </span></h2>
-                    <p>{{ $profile->slogan }}</p>
+                    <h2><span> {{ @$profile->name }} </span></h2>
+                    <p>{{ @$profile->slogan }}</p>
                 </div>
             </div>
         </div>
