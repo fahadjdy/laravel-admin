@@ -26,7 +26,7 @@ Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function
    
    // Profile - Site Detail
     
-    Route::post('/profile/site-detail/{id}', [Admin::class, 'saveSiteDetails'])->name('profile.site.detail.update');
+    Route::post('/profile/site-detail/save', [Admin::class, 'saveSiteDetails'])->name('profile.site.detail.update');
 
     // Profile - Bio Data
     Route::post('/profile/bio-data/save', [Admin::class, 'saveBioData'])->name('profile.save');
