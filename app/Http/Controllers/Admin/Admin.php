@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin\AdminModel;
+use Illuminate\Support\Facades\Validator;
 
 class Admin extends Controller
 {
@@ -22,11 +23,37 @@ class Admin extends Controller
         session()->flush();
         return redirect('admin/login');
     }
-    public function checkLogin()
-    {
-        // return view('admin.login');
-    }
 
+    public function checkLogin(Request $request)
+    {
+        // Validate input
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()->first()
+            ]);
+        }
+
+        // Check credentials
+        if (AdminModel::attempt(['username' => $request->username, 'password' => $request->password])) {
+
+            return response()->json([
+                'status' => 'success',
+                'redirect_url' => route('admin.dashboard')
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid username or password.'
+            ]);
+        }
+    }
+    
     public function edit()
     {
         // $profile = Profile::firstOrCreate(['id' => 1]); // Assuming a single profile

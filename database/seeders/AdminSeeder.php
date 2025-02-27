@@ -14,6 +14,7 @@ class AdminSeeder extends Seeder
     {
         AdminModel::create([
             'name'       => 'Fahad Jdy',
+            'username'       => 'fahadjdy12@gmail.com',
             'slogan'     => 'Administrator',
             'email_1'    => 'fahadjdy12@gmail.com', 
             'email_2'    => null, 
@@ -22,7 +23,7 @@ class AdminSeeder extends Seeder
             'about'  => '', 
             'address_1'  => 'Admin Address', 
             'address_2'  => null, 
-            'password'   => bcrypt('Admin123@'),
+            'password'   => bcrypt('Fahad123@'),
         ]);
     }
 }

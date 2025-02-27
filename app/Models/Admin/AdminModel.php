@@ -3,6 +3,7 @@
 namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 class AdminModel extends Model
 {
@@ -37,5 +38,17 @@ class AdminModel extends Model
     protected $hidden = [
         'password',
     ];
+
+    public static function attempt($credentials)
+    {
+        $admin = self::where('username', $credentials['username'])->first();
+
+        if ($admin && Hash::check($credentials['password'], $admin->password)) {
+            session(['admin_id' => $admin->id, 'admin_username' => $admin->username , "is_admin" => true]);
+            return true;
+        }
+
+        return false;
+    }
 
 }
