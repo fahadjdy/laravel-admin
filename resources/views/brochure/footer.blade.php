@@ -1,7 +1,8 @@
-<tfoot>
-    <tr>
-        <td>
-            <h1>This is Footer</h1>
-        </td>
-    </tr>
-</tfoot>
+
+        <table>
+            <tr>
+                <td>
+                    <p>Admin: {{ $footer['admin'] }}</p>
+                </td>
+            </tr>
+        </table>
