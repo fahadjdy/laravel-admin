@@ -11,11 +11,13 @@ use App\Http\Controllers\Admin\SocialMedia;
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/login', [Admin::class, 'login']);
-    Route::post('/checkLogin', [Admin::class, 'checkLogin']);
+    Route::get('/logout', [Admin::class, 'logout']);
+    Route::post('/checkLogin', [Admin::class, 'checkLogin'])->name('admin.checkLogin');
+
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function () {
-    Route::get('/dashboard', [Admin::class, 'dashboard']);
+    Route::get('/dashboard', [Admin::class, 'dashboard'])->name('admin.dashboard');
 
     // Save Images for profile page 
     Route::get('/profile', [Admin::class, 'profile']);
@@ -24,7 +26,7 @@ Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function
    
    // Profile - Site Detail
     
-    Route::post('/profile/site-detail/{id}', [Admin::class, 'saveSiteDetails'])->name('profile.site.detail.update');
+    Route::post('/profile/site-detail/save', [Admin::class, 'saveSiteDetails'])->name('profile.site.detail.update');
 
     // Profile - Bio Data
     Route::post('/profile/bio-data/save', [Admin::class, 'saveBioData'])->name('profile.save');

@@ -29,7 +29,7 @@
     </table>
 
     <hr>
-    <form id="siteDetailsForm" action="{{ route('profile.site.detail.update', $profile->id) }}" >
+    <form id="siteDetailsForm" action="{{ route('profile.site.detail.update') }}" >
         @csrf
         <div class="container mt-4">
             <div class="row align-items-center mb-3">
