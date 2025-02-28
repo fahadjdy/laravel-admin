@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Brochure;
 use Illuminate\Http\Request;
 use App\Models\Admin\CategoryModel;
 use App\Models\Admin\AdminModel;
@@ -16,6 +17,22 @@ class Category extends Controller
     public function index()
     {
         return view('admin.Category.category');
+    }
+
+    public function brochure($id = null)
+    {
+        $category = CategoryModel::all()->toArray();
+        if ($id) {
+            $category = CategoryModel::find($id);
+        }
+
+        if (empty($category)) {
+            return redirect()->route('404');
+        }
+        
+        $brochure = new Brochure();
+        $brochure->downloadBrochure($category);
+
     }
     
     public function addOrEditCategory($id = null)
@@ -88,8 +105,15 @@ class Category extends Controller
             // Ensure unique and properly formatted data
             $flatCategories = collect($this->flattenCategories($topCategories))->unique('id')->values();
 
+           
             // Format data for DataTable
             $formattedCategories = $flatCategories->map(function ($category) {
+
+                $edit = '<a href="/admin/category/edit/' . $category->id . '" class="btn btn-sm btn-primary">Edit</a>';
+                $brochure = '<a href="/admin/category/brochure/' . $category->id . '" > <i class="fa fa-file-pdf btn btn-sm btn-secondary mx-2"></i></a>';
+                $delete = '<button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>';
+
+                $action = $edit . $brochure . $delete;
                 return [
                     'id' => $category->id,
                     'name' => $category->name,
@@ -100,8 +124,7 @@ class Category extends Controller
                     'image' => $category->thumbnail
                         ? $category->thumbnail
                         : '',
-                    'actions' => '<a href="/admin/category/edit/' . $category->id . '" class="btn btn-sm btn-primary">Edit</a> ' .
-                                '<button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>'
+                    'actions' => $action
                 ];
             });
 
