@@ -21,15 +21,16 @@ class Category extends Controller
 
     public function brochure($id = null)
     {
-        $category = CategoryModel::all()->toArray();
         if ($id) {
-            $category = CategoryModel::find($id);
+            $category[] = CategoryModel::with('parent:id,name')->find($id)->toArray();
+        }else{
+            $category = CategoryModel::with('parent:id,name')->get()->toArray();
         }
-
+        
         if (empty($category)) {
             return redirect()->route('404');
         }
-        
+          
         $brochure = new Brochure();
         $brochure->downloadBrochure($category);
 

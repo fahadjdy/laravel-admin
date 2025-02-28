@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://getbootstrap.com/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet" >
     <title>PDF Template</title>
     <style>
         body {
@@ -12,7 +13,6 @@
 
         table {
             width: 100%;
-            border-collapse: collapse;
         }
 
         thead, tfoot {
@@ -25,11 +25,6 @@
 
         tbody {
             display: table-row-group;
-        }
-
-        td {
-            padding: 10px;
-            vertical-align: top;
         }
 
         @media print {
@@ -47,27 +42,27 @@
 <body>
     <table>
         
-    <thead style="border:1px solid #000">
-        <tr>
-            <td>
-            @include('brochure.header')
-            </td>
-        </tr>
-    </thead>    
-    <tbody>
-        <tr>
-            <td>
-                @include('brochure.main')
-            </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td>
-                @include('brochure.footer')
-            </td>
-        </tr>
-    </tfoot>
+        <thead style="border:1px solid #000">
+            <tr>
+                <td>
+                @include('brochure.header')
+                </td>
+            </tr>
+        </thead>    
+        <tbody>
+            <tr>
+                <td>
+                    @include('brochure.main')
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    @include('brochure.footer')
+                </td>
+            </tr>
+        </tfoot>
 
     </table>
 </body>
