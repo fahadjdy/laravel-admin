@@ -42,7 +42,7 @@
 <body>
     <table>
         
-        <thead style="border:1px solid #000">
+        <thead style="border:1px solid #dee2e6">
             <tr>
                 <td>
                 @include('brochure.header')
