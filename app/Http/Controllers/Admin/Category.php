@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Brochure;
 use Illuminate\Http\Request;
 use App\Models\Admin\CategoryModel;
 use App\Models\Admin\AdminModel;
@@ -16,6 +17,23 @@ class Category extends Controller
     public function index()
     {
         return view('admin.Category.category');
+    }
+
+    public function brochure($id = null)
+    {
+        if ($id) {
+            $category[] = CategoryModel::with('parent:id,name')->find($id)->toArray();
+        }else{
+            $category = CategoryModel::with('parent:id,name')->get()->toArray();
+        }
+        
+        if (empty($category)) {
+            return redirect()->route('404');
+        }
+          
+        $brochure = new Brochure();
+        $brochure->downloadBrochure($category);
+
     }
     
     public function addOrEditCategory($id = null)
@@ -88,8 +106,15 @@ class Category extends Controller
             // Ensure unique and properly formatted data
             $flatCategories = collect($this->flattenCategories($topCategories))->unique('id')->values();
 
+           
             // Format data for DataTable
             $formattedCategories = $flatCategories->map(function ($category) {
+
+                $edit = '<a href="/admin/category/edit/' . $category->id . '" class="btn btn-sm btn-primary">Edit</a>';
+                $brochure = '<a href="/admin/category/brochure/' . $category->id . '" > <i class="fa fa-file-pdf btn btn-sm btn-secondary mx-2"></i></a>';
+                $delete = '<button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>';
+
+                $action = $edit . $brochure . $delete;
                 return [
                     'id' => $category->id,
                     'name' => $category->name,
@@ -100,8 +125,7 @@ class Category extends Controller
                     'image' => $category->thumbnail
                         ? $category->thumbnail
                         : '',
-                    'actions' => '<a href="/admin/category/edit/' . $category->id . '" class="btn btn-sm btn-primary">Edit</a> ' .
-                                '<button class="btn btn-sm btn-danger delete-category" data-id="' . $category->id . '">Delete</button>'
+                    'actions' => $action
                 ];
             });
 
@@ -189,15 +213,8 @@ class Category extends Controller
            
     private function saveCategory(Request $request, CategoryModel $category)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'status' => 'required|boolean',
-            'parent_category' => 'nullable|exists:category,id',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10048',
-            'thumbnail' => 'nullable|string', // Thumbnail will be selected from uploaded images
-            'content' => 'nullable|string',
-        ]);
-    
+        // Validation rules
+        $validator = CategoryModel::validate($request->all());    
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], status: 422);
         }
