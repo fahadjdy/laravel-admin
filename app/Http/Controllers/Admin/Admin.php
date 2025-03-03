@@ -62,18 +62,25 @@ class Admin extends Controller
 
     public function changePassword(Request $request)
     {
-        // $request->validate([
-        //     'current_password' => 'required',
-        //     'new_password' => 'required|min:8|confirmed',
-        // ]);
+       
+         $request->validate([
+                'oldPassword' => 'required',
+                'newPassword' => 'required|min:8',
+        ]);
 
-        // if (!Hash::check($request->current_password, Auth::user()->password)) {
-        //     return back()->withErrors(['current_password' => 'Current password does not match.']);
-        // }
-
-        // Auth::user()->update(['password' => Hash::make($request->new_password)]);
-        // return redirect()->back()->with('success', 'Password updated successfully!');
+        $admin = AdminModel::find(session()->get('admin_id'));
+        
+        if (!$admin || !Hash::check($request->oldPassword, $admin->password)) {
+            return response()->json(['success' => false, 'message' => 'Current password does not match.'], 400);
+        }
+        
+        $admin->update(['password' => Hash::make($request->newPassword)]);
+        
+        return response()->json(['success' => true, 'message' => 'Password updated successfully!']);
+        
     }
+
+
 
 
     public function dashboard()

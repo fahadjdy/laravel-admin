@@ -36,6 +36,8 @@ Route::group(['prefix' => 'admin', 'middleware' => [AdminAuth::class]], function
     Route::post('/profile/social-media/store', [SocialMedia::class, 'store']);
     Route::post('/profile/social-media/update/{id}', [SocialMedia::class, 'update']);
     Route::delete('/profile/social-media/delete/{id}', [SocialMedia::class, 'destroy']);
+
+    Route::post('/profile/change-password',[Admin::class,'changePassword']);
     
 
     Route::get('/category', [Category::class, 'index']);

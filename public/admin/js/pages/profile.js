@@ -370,3 +370,68 @@ profileFile.addEventListener('change', function () {
     });
 
 // ****** Social Media Js [End] ******
+
+
+
+// Change Password 
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("changePasswordForm");
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        let oldPassword = document.getElementById("oldPassword").value.trim();
+        let newPassword = document.getElementById("newPassword").value.trim();
+        let confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+        // Basic validation
+        if (!oldPassword || !newPassword || !confirmPassword) {
+            alert("All fields are required.");
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            alert("New password must be at least 6 characters long.");
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            alert("New password and confirm password do not match.");
+            return;
+        }
+
+        // Prepare data for AJAX request
+        let formData = new FormData();
+        formData.append("oldPassword", oldPassword);
+        formData.append("newPassword", newPassword);
+
+        fetch("/admin/profile/change-password", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Password changed successfully.");
+                form.reset();
+            } else {
+                createToast(
+                    {
+                         status : "fail", 
+                         icon : 'fa fa-cros', 
+                         title : 'Fail', 
+                         message : data.message, 
+                         duration :3000 }
+                );
+
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("An unexpected error occurred.");
+        });
+    });
+});
