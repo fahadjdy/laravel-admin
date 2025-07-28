@@ -1,8 +1,9 @@
 
-        <table>
-            <tr>
-                <td>
-                    <p>Admin: {{ $footer['admin'] }}</p>
-                </td>
-            </tr>
-        </table>
+<hr>
+<table>
+    <tr>
+        <td>
+            <p>Powered By: {{ $footer['admin_name'] }}</p>
+        </td>
+    </tr>
+</table>

@@ -16,11 +16,31 @@ $(document).ready(function () {
         processing: true,
         responsive: true, 
         autoWidth: false, 
+         stateSave: true,
         ajax: {
             url: location.origin + '/admin/category/getAjaxCategory',
             type: 'POST',
         },
-        order: [[0, 'desc']], // Default sorting by ID in DESC order
+        order: [[0, 'desc']], 
+        dom: 'Bfrtip', 
+        buttons: [
+            'colvis',
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':visible:not(:last-child)' 
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':visible:not(:last-child)'
+                },
+                 customize: function (doc) {
+                    doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                }
+            }
+        ],
         columns: [
             { data: null, render: function(data, type, row, meta) {
                 return meta.row + meta.settings._iDisplayStart + 1; 
@@ -31,7 +51,7 @@ $(document).ready(function () {
                 return data ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
             }},
             { data: 'image', render: function(data) {
-                return data ? `<img data-src="${location.origin}/${data}" width="50" height="50" class="lazy">` : 'N/A';
+                return data ? `<img loading="lazy" data-src="${location.origin}/${data}" width="50" height="50" class="lazy">` : 'N/A';
             }, orderable: false },
             { data: 'actions', orderable: false, searchable: false }
         ],
